@@ -24,7 +24,7 @@ def download_file(url, filename):
 
 # decompress
 def bz2_decompress(filename):
-    if not os.path.isfile(filename):
+    if not os.path.isfile(filename[:-4]):
         '''Decompresses a .bz2 file'''
         #take off last 4 chars of filename (strip '.bz2')
         print('Starting decompression')
