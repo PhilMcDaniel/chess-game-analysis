@@ -24,7 +24,7 @@ def download_file(url, filename):
 
 # decompress
 def bz2_decompress(filename):
-    if not os.path.isfile(filename):
+    if os.path.isfile(filename):
         '''Decompresses a .bz2 file'''
         #take off last 4 chars of filename (strip '.bz2')
         print('Starting decompression')
@@ -34,4 +34,4 @@ def bz2_decompress(filename):
         open(newfilename, 'wb').write(data)
         print('Decompression complete')
     else:
-        print('File exists')
+        print('File does not exist')
