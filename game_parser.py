@@ -3,56 +3,67 @@ import os
 import pandas as pd
 
 # https://database.lichess.org/
-# https://database.lichess.org/standard/lichess_db_standard_rated_2018-06.pgn.bz2
-dir = 'resources/'
-url = 'https://database.lichess.org/standard/lichess_db_standard_rated_2013-07.pgn.bz2'
-filename = dir+url[38:]
-decomp_filename = filename[:-4]
 
-dd.download_file(url,filename)
-dd.bz2_decompress(filename)
-
-#delete original .pgn.bz2 file
-for filename in os.listdir(dir):
-    if filename.endswith(".bz2"):
-        fullpath = os.path.join(dir,filename) 
-        os.remove(fullpath)
-        print(f"{fullpath} deleted")
-    else:
-        continue
-
-openings = dict()
-games = 0
-total_lines = 0
-#read 1 line at a time
-with open(decomp_filename,'r') as file:
+# load source files into list
+sources = []
+with open('pgn_source.txt','r') as file:
     for line in file:
-        line = line.strip()
-        total_lines += 1
-        #maintain dict with counts of each opening
-        if line[:8] == '[Opening':
-            opening = line[10:-2]
-            #if key exists in dict, add 1 to count
-            if opening in openings:
-                openings.update({opening:openings[opening]+1})
+        sources.append(line.strip())
+
+
+dir = 'resources/'
+
+# totals across multiple files
+openings = {}
+total_games = 0
+total_lines = 0
+
+for source in reversed(sources):
+    filename = dir+source[38:]
+    # filename after it is decompressed (remove .bz2)
+    decomp_filename = filename[:-4]
+    yyyymm = filename[-15:-8]
+        
+    # download and decompress
+    dd.download_file(source,filename)
+    dd.bz2_decompress(filename)
+
+    # read source .pgn file line by line
+    with open(decomp_filename,'r') as file:
+        file_games = 0
+        file_lines = 0
+        for line in file:
+            line = line.strip()
+            file_lines += 1
+            total_lines += 1
+            # maintain dict with counts of each opening
+            if line[:8] == '[Opening':
+                opening = line[10:-2]
+                if opening in openings.keys() and yyyymm in openings[opening].keys():
+                    openings[opening][yyyymm] = openings[opening][yyyymm]+1
+                elif opening in openings.keys() and yyyymm not in openings[opening].keys():
+                    openings[opening][yyyymm] = 1
+                else:
+                    openings[opening] = {yyyymm:1}
+            # Count number of games. Using each occurance of "[Result"
+            if line[:7] == '[Result':
+                file_games += 1
+                total_games += 1
             else:
-            #add key to dict if it doesn't already exist
-                openings[opening]=1
+                pass
+            
+    print(f"File lines: {file_lines}, File games: {file_games}")
+    print(f"Total lines: {total_lines},Total games: {total_games}")
 
-        #Count number of games. Using each occurance of "[Result"
-        if line[:7] == '[Result':
-            games +=1
+    # delete .pgn & .bz2 files
+    for filename in os.listdir(dir):
+        if filename.endswith(".bz2") or filename.endswith(".pgn"):
+            fullpath = os.path.join(dir,filename) 
+            os.remove(fullpath)
+            print(f"{fullpath} deleted")
         else:
-            pass
-    file.close()
+            continue
 
-#total_lines
-#games
-#openings
+# openings
 
-#parse and count the openings
-openings_df = pd.DataFrame.from_dict(openings,orient='index',columns=['Count'])
-openings_df.head(10)
-openings_df.sort_values(by='Count',ascending=False)
-#parse and count results by color
-#parse and count results by rating
+# get openings into dataframe
