@@ -21,11 +21,13 @@ for filename in os.listdir(dir):
         continue
 
 openings = dict()
-games = {'Games':0}
+games = 0
+total_lines = 0
 #read 1 line at a time
 with open(decomp_filename,'r') as file:
     for line in file:
-        line = file.readline().strip()
+        line = line.strip()
+        total_lines += 1
         #maintain dict with counts of each opening
         if line[:8] == '[Opening':
             opening = line[10:-3]
@@ -36,13 +38,14 @@ with open(decomp_filename,'r') as file:
             #add key to dict if it doesn't already exist
                 openings[opening]=1
 
-        #Count number of games. Using each occurance of "[Site"
-        if line[:5] == '[Site':
-            games['Games'] +=1
-
+        #Count number of games. Using each occurance of "[Result"
+        if line[:7] == '[Result':
+            games +=1
         else:
             pass
+    file.close()
 
+total_lines
 games
 openings
 
