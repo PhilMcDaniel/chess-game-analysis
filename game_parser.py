@@ -1,8 +1,12 @@
 import download_decompress as dd
 import os
 import pandas as pd
+import time
 
 # https://database.lichess.org/
+
+start = time.perf_counter()
+
 
 # load source files into list
 sources = []
@@ -19,6 +23,9 @@ total_games = 0
 total_lines = 0
 
 for source in reversed(sources):
+    
+    loopstart = time.perf_counter()
+
     filename = dir+source[38:]
     # filename after it is decompressed (remove .bz2)
     decomp_filename = filename[:-4]
@@ -63,7 +70,13 @@ for source in reversed(sources):
             print(f"{fullpath} deleted")
         else:
             continue
+    loopend = time.perf_counter()
 
+    print(f"{yyyymm} Execution time: {round((loopend - loopstart),2)} seconds")
 # openings
 
 # get openings into dataframe
+
+
+end = time.perf_counter()
+print(f"Total execution time: {round((end - start),2)} seconds")
