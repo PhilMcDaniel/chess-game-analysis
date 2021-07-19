@@ -2,13 +2,17 @@ import os
 import requests
 import time
 import bz2
+import logging
+
+logging.basicConfig(level=logging.NOTSET)
+#logging.disable()
 
 #download method
 def download_file(url, filename):
     ''' Downloads file from the url and save it as filename '''
     # check if file already exists
     if not os.path.isfile(filename):
-        print('Downloading file')
+        logging.info('Downloading file')
         response = requests.get(url)
         # Check if the response is ok (200)
         if response.status_code == 200:
@@ -18,9 +22,9 @@ def download_file(url, filename):
                 for chunk in response:
                     file.write(chunk)
                 time.sleep(1)
-        print("Download complete")
+        logging.info("Download complete")
     else:
-        print('File exists')
+        logging.info('File exists')
 
 # decompress
 def bz2_decompress(filename):
@@ -28,13 +32,13 @@ def bz2_decompress(filename):
     #only decompress file if the referenced file exists, and there isn't an existing non-.bs2 file in the dir
     if os.path.isfile(filename) and not os.path.isfile(filename[:-4]):
         #take off last 4 chars of filename (strip '.bz2')
-        print('Starting decompression')
+        logging.info('Starting decompression')
         zipfile = bz2.BZ2File(filename)
         data = zipfile.read()
         newfilename = filename[:-4]
         open(newfilename, 'wb').write(data)
-        print('Decompression complete')
+        logging.info('Decompression complete')
     elif os.path.isfile(filename[:-4]):
-        print('Decompressed file already exists')
+        logging.info('Decompressed file already exists')
     else:
-        print('File does not exist')
+        logging.info('File does not exist')

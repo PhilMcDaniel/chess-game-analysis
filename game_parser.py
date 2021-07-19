@@ -2,6 +2,11 @@ import download_decompress as dd
 import os
 import pandas as pd
 import time
+import logging
+
+
+logging.basicConfig(level=logging.NOTSET)
+#logging.disable()
 
 # https://database.lichess.org/
 
@@ -59,24 +64,24 @@ for source in reversed(sources):
             else:
                 pass
             
-    print(f"File lines: {file_lines}, File games: {file_games}")
-    print(f"Total lines: {total_lines},Total games: {total_games}")
+    logging.info(f"File lines: {file_lines}, File games: {file_games}")
+    logging.info(f"Total lines: {total_lines},Total games: {total_games}")
 
     # delete .pgn & .bz2 files
     for filename in os.listdir(dir):
         if filename.endswith(".bz2") or filename.endswith(".pgn"):
             fullpath = os.path.join(dir,filename) 
             os.remove(fullpath)
-            print(f"{fullpath} deleted")
+            logging.info(f"{fullpath} deleted")
         else:
             continue
     loopend = time.perf_counter()
 
-    print(f"{yyyymm} Execution time: {round((loopend - loopstart),2)} seconds")
+    logging.info(f"{yyyymm} Execution time: {round((loopend - loopstart),2)} seconds")
 # openings
 
 # get openings into dataframe
 
 
 end = time.perf_counter()
-print(f"Total execution time: {round((end - start),2)} seconds")
+logging.info(f"Total execution time: {round((end - start),2)} seconds")
