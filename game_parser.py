@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import time
 import logging
+import matplotlib.pyplot as plt
 
 
 logging.basicConfig(level=logging.NOTSET)
@@ -34,7 +35,8 @@ for source in reversed(sources):
     filename = dir+source[38:]
     # filename after it is decompressed (remove .bz2)
     decomp_filename = filename[:-4]
-    yyyymm = filename[-15:-8]
+    yyyymm = filename[-15:-8] # '2013-01'
+    yyyymm = yyyymm[:4]+yyyymm[5:7] # 201301
         
     # download and decompress
     dd.download_file(source,filename)
@@ -81,7 +83,20 @@ for source in reversed(sources):
 # openings
 
 # get openings into dataframe
+# dict to dataframe
+df = pd.DataFrame.from_dict(openings, orient='index').reset_index()
+df = df.rename(columns={"index":"Opening"})
 
+# turn columns for YYYYMM values into rows
+dfraw = df.melt(id_vars = ['Opening'],value_vars=df.columns,var_name="YYYYMM",value_name="Count")
+#dfraw
+
+#agregate to view top overall openings
+dfaggregate = dfraw.groupby(['Opening']).sum().reset_index().sort_values(by=["Count"],ascending=False)
+dfaggregate
+#plot top 100 openings
+ax = dfaggregate.head(50).plot.bar(x='Opening',y='Count')
+plt.show()
 
 end = time.perf_counter()
 logging.info(f"Total execution time: {round((end - start),2)} seconds")
