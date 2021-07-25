@@ -13,6 +13,10 @@ logging.basicConfig(level=logging.NOTSET)
 
 start = time.perf_counter()
 
+#make dir to hold downloads
+dir = 'Downloads'
+if not os.path.exists(dir):
+    os.mkdir(dir)
 
 # load source files into list
 sources = []
@@ -20,8 +24,6 @@ with open('pgn_source.txt','r') as file:
     for line in file:
         sources.append(line.strip())
 
-
-dir = 'resources/'
 
 # totals across multiple files
 openings = {}
@@ -32,7 +34,7 @@ for source in reversed(sources):
     
     loopstart = time.perf_counter()
 
-    filename = dir+source[38:]
+    filename = os.path.join(dir,source[38:])
     # filename after it is decompressed (remove .bz2)
     decomp_filename = filename[:-4]
     yyyymm = filename[-15:-8] # '2013-01'
@@ -77,8 +79,12 @@ for source in reversed(sources):
             logging.info(f"{fullpath} deleted")
         else:
             continue
-    loopend = time.perf_counter()
+    
+    # add processed urls to text file to track
+    with open("processed_files.txt", "a") as processed_file:
+        processed_file.write(f"{source}\n")
 
+    loopend = time.perf_counter()
     logging.info(f"{yyyymm} Execution time: {round((loopend - loopstart),2)} seconds")
 # openings
 
