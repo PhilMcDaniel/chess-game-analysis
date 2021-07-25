@@ -89,13 +89,15 @@ for source in reversed(sources):
 # openings
 
 # get openings into dataframe
-# dict to dataframe
 df = pd.DataFrame.from_dict(openings, orient='index').reset_index()
 df = df.rename(columns={"index":"Opening"})
 
 # turn columns for YYYYMM values into rows
 dfraw = df.melt(id_vars = ['Opening'],value_vars=df.columns,var_name="YYYYMM",value_name="Count")
 #dfraw
+
+# put opening by yyyymm into csv
+dfraw.to_csv('openings_by_yyyymm.csv', sep=',', encoding='utf-8',index=False)
 
 #agregate to view top overall openings
 dfaggregate = dfraw.groupby(['Opening']).sum().reset_index().sort_values(by=["Count"],ascending=False)
