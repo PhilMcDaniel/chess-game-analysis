@@ -88,6 +88,9 @@ for source in reversed(sources):
     logging.info(f"{yyyymm} Execution time: {round((loopend - loopstart),2)} seconds")
 # openings
 
+end = time.perf_counter()
+logging.info(f"Total execution time: {round((end - start),2)} seconds")
+
 # get openings into dataframe
 df = pd.DataFrame.from_dict(openings, orient='index').reset_index()
 df = df.rename(columns={"index":"Opening"})
@@ -99,12 +102,16 @@ dfraw = df.melt(id_vars = ['Opening'],value_vars=df.columns,var_name="YYYYMM",va
 # put opening by yyyymm into csv
 dfraw.to_csv('openings_by_yyyymm.csv', sep=',', encoding='utf-8',index=False)
 
+# if csv exists load and combine with above dataframe
+if os.path.isfile('openings_by_yyyymm.csv'):
+    olddf = pd.read_csv('openings_by_yyyymm.csv',sep=',')
+    combined_raw = pd.concat([dfraw,olddf])
+else:
+    combined_raw = dfraw
+
 #agregate to view top overall openings
-dfaggregate = dfraw.groupby(['Opening']).sum().reset_index().sort_values(by=["Count"],ascending=False)
+dfaggregate = combined_raw.groupby(['Opening']).sum().reset_index().sort_values(by=["Count"],ascending=False)
 dfaggregate
 #plot top 100 openings
 ax = dfaggregate.head(50).plot.bar(x='Opening',y='Count')
 plt.show()
-
-end = time.perf_counter()
-logging.info(f"Total execution time: {round((end - start),2)} seconds")
