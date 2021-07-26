@@ -1,12 +1,3 @@
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-12.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-11.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-10.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-09.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-08.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-07.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-06.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-05.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-04.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-03.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-02.pgn.bz2
-https://database.lichess.org/standard/lichess_db_standard_rated_2017-01.pgn.bz2
+https://database.lichess.org/standard/lichess_db_standard_rated_2018-05.pgn.bz2
+https://database.lichess.org/standard/lichess_db_standard_rated_2018-04.pgn.bz2
+https://database.lichess.org/standard/lichess_db_standard_rated_2018-03.pgn.bz2
