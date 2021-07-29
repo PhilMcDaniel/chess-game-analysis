@@ -4,6 +4,7 @@ import pandas as pd
 import time
 import logging
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 
 logging.basicConfig(level=logging.NOTSET)
@@ -114,5 +115,13 @@ logging.info(f"Total execution time: {round((end - start),2)} seconds")
 dfaggregate = combined_raw.groupby(['Opening']).sum().reset_index().sort_values(by=["Count"],ascending=False)
 dfaggregate
 #plot top 100 openings
-ax = dfaggregate.head(50).plot.bar(x='Opening',y='Count')
+ax = dfaggregate.head(50).plot.barh(x='Opening',y='Count')
+#invert so that y axis descends
+ax.invert_yaxis()
+#update so that scientific notation is not used
+ax.ticklabel_format(style='plain',axis='x')
+#add commas to x axis
+ax.get_xaxis().set_major_formatter(
+    mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
 plt.show()
