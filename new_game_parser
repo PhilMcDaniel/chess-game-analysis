@@ -1,3 +1,5 @@
+import pandas as pd
+
 def parse_pgn_to_dict(filename):
     '''Parses out the information from a .pgn file into a dictionary'''
     line_num = 0
@@ -79,5 +81,12 @@ def parse_pgn_to_dict(filename):
     #data['https://lichess.org/j1dkb5dw']
     #data
 
+
 parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2013-01.pgn')
 #game count not matching expected values...
+
+#load dict data to datafame
+df = pd.DataFrame.from_dict(data,orient='index')
+
+df.describe()
+df
