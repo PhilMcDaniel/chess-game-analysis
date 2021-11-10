@@ -5,13 +5,18 @@ with open('Downloads/lichess_db_standard_rated_2013-01.pgn','r') as file:
         line_num += 1
         if line_num > 100:
             break
-        #parse game_id
-        if (line_num % 18 == 2):
-            game_id = line.strip()[7:-2]
         #parse game_type
-        if (line_num % 18 == 1):
+        if (line_num % 18) == 1:
             game_type = line.strip()[8:-2]
-        
+        #parse game_id
+        if (line_num % 18) == 2:
+            game_id = line.strip()[7:-2]
+        #parse player_id_white
+        if (line_num % 18) == 3:
+            player_id_white = line.strip()[8:-2]
+        #parse player_id_black
+        if (line_num % 18) == 4:
+            player_id_black = line.strip()[8:-2]      
         #parse game_result    
         if (line_num % 18) == 5:
             game_result = line.strip()[9:-2]
@@ -21,14 +26,30 @@ with open('Downloads/lichess_db_standard_rated_2013-01.pgn','r') as file:
                 game_result = 'Black'
             else:  
                 game_result = 'Draw'
-            data[game_id]={'game_type':game_type,'game_result':game_result}
+            
 
         #parse game_date
-
+        if (line_num % 18) == 6:
+            game_date = line.strip()[10:-2]
         #parse game_time
+        if (line_num % 18) == 7:
+            game_time = line.strip()[10:-2]
+            data[game_id]={'game_type':game_type,'game_result':game_result,'game_date':game_date,'game_time':game_time,'player_id_white':player_id_white,'player_id_black':player_id_black}
+        
+        #parse white_start_elo
 
-        #parse player_id_white
+        #parse black_start_elo
 
-        #parse player_id_black
+        #parse white_game_elo
+
+        #parse black_game_elo
+
+        #parse game_opening
+        
+        #parse game_termination
+
+        #parse game_time_control
         else:
             continue
+
+data['https://lichess.org/j1dkb5dw']
