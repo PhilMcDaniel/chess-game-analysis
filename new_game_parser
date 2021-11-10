@@ -1,0 +1,34 @@
+line_num = 0
+data = {}
+with open('Downloads/lichess_db_standard_rated_2013-01.pgn','r') as file:
+    for line in file:
+        line_num += 1
+        if line_num > 100:
+            break
+        #parse game_id
+        if (line_num % 18 == 2):
+            game_id = line.strip()[7:-2]
+        #parse game_type
+        if (line_num % 18 == 1):
+            game_type = line.strip()[8:-2]
+        
+        #parse game_result    
+        if (line_num % 18) == 5:
+            game_result = line.strip()[9:-2]
+            if (game_result == '1-0'):
+                game_result = 'White'
+            elif (game_result == '0-1'):
+                game_result = 'Black'
+            else:  
+                game_result = 'Draw'
+            data[game_id]={'game_type':game_type,'game_result':game_result}
+
+        #parse game_date
+
+        #parse game_time
+
+        #parse player_id_white
+
+        #parse player_id_black
+        else:
+            continue
