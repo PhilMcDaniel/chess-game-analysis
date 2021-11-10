@@ -1,55 +1,83 @@
-line_num = 0
-data = {}
-with open('Downloads/lichess_db_standard_rated_2013-01.pgn','r') as file:
-    for line in file:
-        line_num += 1
-        if line_num > 100:
-            break
-        #parse game_type
-        if (line_num % 18) == 1:
-            game_type = line.strip()[8:-2]
-        #parse game_id
-        if (line_num % 18) == 2:
-            game_id = line.strip()[7:-2]
-        #parse player_id_white
-        if (line_num % 18) == 3:
-            player_id_white = line.strip()[8:-2]
-        #parse player_id_black
-        if (line_num % 18) == 4:
-            player_id_black = line.strip()[8:-2]      
-        #parse game_result    
-        if (line_num % 18) == 5:
-            game_result = line.strip()[9:-2]
-            if (game_result == '1-0'):
-                game_result = 'White'
-            elif (game_result == '0-1'):
-                game_result = 'Black'
-            else:  
-                game_result = 'Draw'
+def parse_pgn_to_dict(filename):
+    '''Parses out the information from a .pgn file into a dictionary'''
+    line_num = 0
+    data = {}
+    with open(filename,'r') as file:
+        for line in file:
+            line_num += 1
+            #parse game_type
+            if (line_num % 18) == 1:
+                game_type = line.strip()[8:-2]
+            #parse game_id
+            if (line_num % 18) == 2:
+                game_id = line.strip()[7:-2]
+            #parse player_id_white
+            if (line_num % 18) == 3:
+                player_id_white = line.strip()[8:-2]
+            #parse player_id_black
+            if (line_num % 18) == 4:
+                player_id_black = line.strip()[8:-2]      
+            #parse game_result    
+            if (line_num % 18) == 5:
+                game_result = line.strip()[9:-2]
+                if (game_result == '1-0'):
+                    game_result = 'White'
+                elif (game_result == '0-1'):
+                    game_result = 'Black'
+                else:  
+                    game_result = 'Draw'
+            #parse game_date
+            if (line_num % 18) == 6:
+                game_date = line.strip()[10:-2]
+            #parse game_time
+            if (line_num % 18) == 7:
+                game_time = line.strip()[10:-2]
             
+            #parse white_start_elo
+            if (line_num % 18) == 8:
+                white_start_elo = line.strip()[12:-2]
+            #parse black_start_elo
+            if (line_num % 18) == 9:
+                black_start_elo = line.strip()[12:-2]
+            #parse white_game_elo
+            if (line_num % 18) == 10:
+                white_game_elo = line.strip()[18:-2]
+            #parse black_game_elo
+            if (line_num % 18) == 11:
+                black_game_elo = line.strip()[18:-2]
+            #parse game_opening
+            if (line_num % 18) == 13:
+                game_opening = line.strip()[10:-2]        
+            #parse game_time_control
+            if (line_num % 18) == 14:
+                game_time_control = line.strip()[14:-2] 
+            #parse game_termination
+            if (line_num % 18) == 15:
+                game_termination = line.strip()[14:-2]
+            #insert in dictionary now that we have a full "game" worth of data
+                data[game_id] = {
+                                'game_type':game_type
+                                ,'game_result':game_result
+                                ,'game_date':game_date
+                                ,'game_time':game_time
+                                ,'player_id_white':player_id_white
+                                ,'player_id_black':player_id_black
+                                ,'white_start_elo':white_start_elo
+                                ,'black_start_elo':black_start_elo
+                                ,'white_game_elo':white_game_elo
+                                ,'black_game_elo':black_game_elo
+                                ,'game_opening':game_opening
+                                ,'game_time_control':game_time_control
+                                ,'game_termination':game_termination
+                                }
+                
+            else:
+                continue
+    games_processed = len(data)
+    print(f"{line_num} rows have been parsed")
+    print(f"{games_processed} games have been parsed")
+    #data['https://lichess.org/j1dkb5dw']
+    #data
 
-        #parse game_date
-        if (line_num % 18) == 6:
-            game_date = line.strip()[10:-2]
-        #parse game_time
-        if (line_num % 18) == 7:
-            game_time = line.strip()[10:-2]
-            data[game_id]={'game_type':game_type,'game_result':game_result,'game_date':game_date,'game_time':game_time,'player_id_white':player_id_white,'player_id_black':player_id_black}
-        
-        #parse white_start_elo
-
-        #parse black_start_elo
-
-        #parse white_game_elo
-
-        #parse black_game_elo
-
-        #parse game_opening
-        
-        #parse game_termination
-
-        #parse game_time_control
-        else:
-            continue
-
-data['https://lichess.org/j1dkb5dw']
+parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2013-01.pgn')
+#game count not matching expected values...
