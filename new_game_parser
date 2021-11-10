@@ -3,25 +3,28 @@ import pandas as pd
 def parse_pgn_to_dict(filename):
     '''Parses out the information from a .pgn file into a dictionary'''
     line_num = 0
+    results = 0
     data = {}
     with open(filename,'r') as file:
         for line in file:
+            line = line.strip()
             line_num += 1
+
             #parse game_type
-            if (line_num % 18) == 1:
-                game_type = line.strip()[8:-2]
+            if (line[:6] == '[Event'):
+                game_type = line[8:-2]
             #parse game_id
-            if (line_num % 18) == 2:
-                game_id = line.strip()[7:-2]
+            if (line[:5] == '[Site'):
+                game_id = line[7:-2]
             #parse player_id_white
-            if (line_num % 18) == 3:
-                player_id_white = line.strip()[8:-2]
+            if (line[:6] == '[White'):
+                player_id_white = line[8:-2]
             #parse player_id_black
-            if (line_num % 18) == 4:
-                player_id_black = line.strip()[8:-2]      
+            if (line[:6] == '[Black'):
+                player_id_black = line[8:-2]      
             #parse game_result    
-            if (line_num % 18) == 5:
-                game_result = line.strip()[9:-2]
+            if (line[:7] == '[Result'):
+                game_result = line[9:-2]
                 if (game_result == '1-0'):
                     game_result = 'White'
                 elif (game_result == '0-1'):
@@ -29,33 +32,33 @@ def parse_pgn_to_dict(filename):
                 else:  
                     game_result = 'Draw'
             #parse game_date
-            if (line_num % 18) == 6:
-                game_date = line.strip()[10:-2]
+            if (line[:8] == '[UTCDate'):
+                game_date = line[10:-2]
             #parse game_time
-            if (line_num % 18) == 7:
-                game_time = line.strip()[10:-2]
+            if (line[:8] == '[UTCTime'):
+                game_time = line[10:-2]
             
             #parse white_start_elo
-            if (line_num % 18) == 8:
-                white_start_elo = line.strip()[12:-2]
+            if (line[:9] == '[WhiteElo'):
+                white_start_elo = line[12:-2]
             #parse black_start_elo
-            if (line_num % 18) == 9:
-                black_start_elo = line.strip()[12:-2]
+            if (line[:9] == '[BlackElo'):
+                black_start_elo = line[12:-2]
             #parse white_game_elo
-            if (line_num % 18) == 10:
-                white_game_elo = line.strip()[18:-2]
+            if (line[:16] == '[WhiteRatingDiff'):
+                white_game_elo = line[18:-2]
             #parse black_game_elo
-            if (line_num % 18) == 11:
-                black_game_elo = line.strip()[18:-2]
+            if (line[:16] == '[BlackRatingDiff'):
+                black_game_elo = line[18:-2]
             #parse game_opening
-            if (line_num % 18) == 13:
-                game_opening = line.strip()[10:-2]        
+            if (line[:8] == '[Opening'):
+                game_opening = line[10:-2]        
             #parse game_time_control
-            if (line_num % 18) == 14:
-                game_time_control = line.strip()[14:-2] 
+            if (line[:12] == '[TimeControl'):
+                game_time_control = line[14:-2] 
             #parse game_termination
-            if (line_num % 18) == 15:
-                game_termination = line.strip()[14:-2]
+            if (line[:12] == '[Termination'):
+                game_termination = line[14:-2]
             #insert in dictionary now that we have a full "game" worth of data
                 data[game_id] = {
                                 'game_type':game_type
@@ -72,21 +75,24 @@ def parse_pgn_to_dict(filename):
                                 ,'game_time_control':game_time_control
                                 ,'game_termination':game_termination
                                 }
-                
+            if line[:7] == '[Result':
+                results+=1
             else:
                 continue
     games_processed = len(data)
     print(f"{line_num} rows have been parsed")
     print(f"{games_processed} games have been parsed")
+    print(f"{results} results have been parsed")
+
     #data['https://lichess.org/j1dkb5dw']
-    #data
+    return data 
 
 
-parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2013-01.pgn')
-#game count not matching expected values...
+data = parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2014-07.pgn')
 
 #load dict data to datafame
-df = pd.DataFrame.from_dict(data,orient='index')
 
+df = pd.DataFrame.from_dict(data,orient='index')
 df.describe()
 df
+
