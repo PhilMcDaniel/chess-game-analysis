@@ -1,4 +1,5 @@
 import pandas as pd
+from google.cloud import bigquery
 
 def parse_pgn_to_dict(filename):
     '''Parses out the information from a .pgn file into a dictionary'''
@@ -91,8 +92,11 @@ def parse_pgn_to_dict(filename):
 data = parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2014-07.pgn')
 
 #load dict data to datafame
-
 df = pd.DataFrame.from_dict(data,orient='index')
 df.describe()
-df
+#df
 
+
+#load df to bigquery table
+# Construct a BigQuery client object.
+client = bigquery.Client()
