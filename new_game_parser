@@ -1,5 +1,7 @@
 import pandas as pd
 from google.cloud import bigquery
+import os
+
 
 def parse_pgn_to_dict(filename):
     '''Parses out the information from a .pgn file into a dictionary'''
@@ -99,4 +101,7 @@ df.describe()
 
 #load df to bigquery table
 # Construct a BigQuery client object.
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/philmcdaniel/Documents/GitHub/chess-game-analysis/keys.json"
 client = bigquery.Client()
+
+#https://cloud.google.com/bigquery/docs/samples/bigquery-load-table-dataframe
