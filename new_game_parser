@@ -96,10 +96,14 @@ data = parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2014-07.pgn')
 #load dict data to datafame
 df = pd.DataFrame.from_dict(data,orient='index')
 df['game_id']=df.index
-df.reset_index(drop=True, inplace=True)
+df.reset_index(drop=True)
+df = df[['game_type','game_result','game_date', 'game_time', 'player_id_white',
+       'player_id_black', 'white_start_elo', 'black_start_elo',
+       'white_game_elo', 'black_game_elo', 'game_opening', 'game_time_control',
+       'game_termination', 'game_id']]
 df.describe()
-df.columns
-df.dtypes
+#df.columns
+#df.dtypes
 
 
 
@@ -110,7 +114,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/philmcdaniel/Documents/GitH
 table_id = 'valid-logic-327117.ChessGames.ChessGamesTable'
 client = bigquery.Client()
 
-
+#todo fix issue with insert misalignment. 
 job_config = bigquery.LoadJobConfig(
     schema=[
 
