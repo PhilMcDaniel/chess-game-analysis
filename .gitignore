@@ -131,3 +131,4 @@ dmypy.json
 /env
 /resources
 configs.txt
+keys.json
