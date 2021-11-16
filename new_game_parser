@@ -20,10 +20,10 @@ def parse_pgn_to_dict(filename):
             if (line[:5] == '[Site'):
                 game_id = line[7:-2]
             #parse player_id_white
-            if (line[:6] == '[White'):
+            if (line[:7] == '[White '):
                 player_id_white = line[8:-2]
             #parse player_id_black
-            if (line[:6] == '[Black'):
+            if (line[:7] == '[Black '):
                 player_id_black = line[8:-2]      
             #parse game_result    
             if (line[:7] == '[Result'):
