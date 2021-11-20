@@ -88,10 +88,11 @@ def parse_pgn_to_dict(filename):
     print(f"{results} results have been parsed")
 
     #data['https://lichess.org/j1dkb5dw']
-    return data 
+    return data
 
 
-data = parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2014-07.pgn')
+data = parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2013-06.pgn')
+
 
 #load dict data to datafame
 df = pd.DataFrame.from_dict(data,orient='index')
@@ -104,7 +105,6 @@ df = df[['game_type','game_result','game_date', 'game_time', 'player_id_white',
 df.describe()
 #df.columns
 #df.dtypes
-
 
 
 #load df to bigquery table
@@ -136,7 +136,7 @@ job_config = bigquery.LoadJobConfig(
     # Optionally, set the write disposition. BigQuery appends loaded rows
     # to an existing table by default, but with WRITE_TRUNCATE write
     # disposition it replaces the table with the loaded data.
-    write_disposition="WRITE_TRUNCATE",
+    write_disposition="WRITE_APPEND",
 )
 
 job = client.load_table_from_dataframe(
@@ -144,6 +144,7 @@ job = client.load_table_from_dataframe(
 )  # Make an API request.
 job.result()  # Wait for the job to complete.
 
+#current table rowcount
 table = client.get_table(table_id)  # Make an API request.
 print(
     "Loaded {} rows and {} columns to {}".format(
