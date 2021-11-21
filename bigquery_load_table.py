@@ -29,6 +29,7 @@ def load_df_to_BQ(dataframe):
             bigquery.SchemaField("game_time_control",bigquery.enums.SqlTypeNames.STRING),
             bigquery.SchemaField("game_termination",bigquery.enums.SqlTypeNames.STRING),
             bigquery.SchemaField("game_id",bigquery.enums.SqlTypeNames.STRING),
+            bigquery.SchemaField("source_file_name",bigquery.enums.SqlTypeNames.STRING),
         ],
         # Optionally, set the write disposition. BigQuery appends loaded rows
         # to an existing table by default, but with WRITE_TRUNCATE write

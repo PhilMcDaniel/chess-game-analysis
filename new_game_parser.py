@@ -1,7 +1,7 @@
 import pandas as pd
 
 def parse_pgn_to_dict(filename):
-    '''Parses out the information from a .pgn file into a dictionary'''
+    '''Parses out the information from a .pgn file into a dictionary and then a dataframe'''
     line_num = 0
     results = 0
     data = {}
@@ -59,6 +59,12 @@ def parse_pgn_to_dict(filename):
             #parse game_termination
             if (line[:12] == '[Termination'):
                 game_termination = line[14:-2]
+
+            #null handling for missing source data
+                try: white_game_elo
+                except NameError: white_game_elo = '0'
+                try: black_game_elo
+                except NameError: black_game_elo = '0'
             #insert in dictionary now that we have a full "game" worth of data
                 data[game_id] = {
                                 'game_type':game_type
@@ -89,12 +95,13 @@ def parse_pgn_to_dict(filename):
     #load dict data to datafame
     df = pd.DataFrame.from_dict(data,orient='index')
     df['game_id']=df.index
+    df['source_file_name'] = filename
     df.reset_index(drop=True)
     df = df[['game_type','game_result','game_date', 'game_time', 'player_id_white',
         'player_id_black', 'white_start_elo', 'black_start_elo',
         'white_game_elo', 'black_game_elo', 'game_opening', 'game_time_control',
-        'game_termination', 'game_id']]
-    df.describe()
+        'game_termination', 'game_id','source_file_name']]
+    #df.describe()
     #df.columns
     #df.dtypes
     return df
