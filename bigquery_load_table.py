@@ -9,7 +9,7 @@ def load_df_to_BQ(dataframe):
     # Construct a BigQuery client object.
     #https://cloud.google.com/bigquery/docs/samples/bigquery-load-table-dataframe
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=configs.GOOGLE_APPLICATION_CREDENTIALS
-    table_id = configs.table
+    table_id = configs.TABLE_ID
     client = bigquery.Client()
 
     #todo fix issue with insert misalignment. 
@@ -39,7 +39,7 @@ def load_df_to_BQ(dataframe):
     job = client.load_table_from_dataframe(
         dataframe, table_id, job_config=job_config
     )  # Make an API request.
-    job.result()  # Wait for the job to complete.
+    return job.result()  # Wait for the job to complete.
 
     ##current table rowcount
     #table = client.get_table(table_id)  # Make an API request.
