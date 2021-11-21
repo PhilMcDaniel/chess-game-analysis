@@ -1,9 +1,20 @@
 import os
-import new_game_parser 
-import bigquery_load_table
+import new_game_parser as ngp
+import bigquery_load_table as blt
 
+#get list of files in Downloads folder
+dir = 'Downloads/'
+for filename in os.listdir(dir):
+    fullpath = os.path.join(dir,filename)
+    #print(fullpath)
 
-
-data.head(5)
-
-bigquery_load_table.load_df_to_BQ(dataframe = parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2014-08.pgn'))
+    #only load .pgn files
+    if fullpath.endswith(".pgn"):
+        #load file into dataframe
+        dataframe = ngp.parse_pgn_to_dict(fullpath)
+        
+        #load dataframe to bigquery
+        blt.load_df_to_BQ(dataframe)
+        print(f'{filename} has been loaded to bigquery successfully')
+    else:
+        continue
