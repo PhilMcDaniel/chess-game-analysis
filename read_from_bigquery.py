@@ -19,4 +19,4 @@ def bq_to_dataframe(query_string):
             create_bqstorage_client=True,
         )
     )
-    return(dataframe.head())
+    return(dataframe)
