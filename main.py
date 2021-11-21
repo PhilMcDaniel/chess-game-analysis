@@ -21,5 +21,9 @@ for filename in os.listdir(dir):
         continue
 
 #send query to bigquery, will be used for dataviz
-query = 'SELECT * FROM `valid-logic-327117.ChessGames.ChessGamesTable` LIMIT 1;'
-rfb.bq_to_dataframe(query)
+query = 'SELECT LEFT(game_date,7) yyyymm,COUNT(*) FROM `valid-logic-327117.ChessGames.ChessGamesTable` GROUP BY 1'
+dataframe = rfb.bq_to_dataframe(query)
+
+dataframe.head(100).sort_values(by="f0_", ascending=False)
+dataframe.dtypes
+
