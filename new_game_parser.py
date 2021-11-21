@@ -1,7 +1,4 @@
 import pandas as pd
-from google.cloud import bigquery
-import os
-
 
 def parse_pgn_to_dict(filename):
     '''Parses out the information from a .pgn file into a dictionary'''
@@ -88,67 +85,17 @@ def parse_pgn_to_dict(filename):
     print(f"{results} results have been parsed")
 
     #data['https://lichess.org/j1dkb5dw']
-    return data
-
-
-data = parse_pgn_to_dict('Downloads/lichess_db_standard_rated_2013-06.pgn')
-
-
-#load dict data to datafame
-df = pd.DataFrame.from_dict(data,orient='index')
-df['game_id']=df.index
-df.reset_index(drop=True)
-df = df[['game_type','game_result','game_date', 'game_time', 'player_id_white',
-       'player_id_black', 'white_start_elo', 'black_start_elo',
-       'white_game_elo', 'black_game_elo', 'game_opening', 'game_time_control',
-       'game_termination', 'game_id']]
-df.describe()
-#df.columns
-#df.dtypes
-
-
-#load df to bigquery table
-# Construct a BigQuery client object.
-#https://cloud.google.com/bigquery/docs/samples/bigquery-load-table-dataframe
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/philmcdaniel/Documents/GitHub/chess-game-analysis/keys.json"
-table_id = 'valid-logic-327117.ChessGames.ChessGamesTable'
-client = bigquery.Client()
-
-#todo fix issue with insert misalignment. 
-job_config = bigquery.LoadJobConfig(
-    schema=[
-
-        bigquery.SchemaField("game_type",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("game_result",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("game_date",bigquery.enums.SqlTypeNames.STRING),	
-        bigquery.SchemaField("game_time",bigquery.enums.SqlTypeNames.STRING),	
-        bigquery.SchemaField("player_id_white",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("player_id_black",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("white_start_elo",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("black_start_elo",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("white_game_elo",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("black_game_elo",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("game_opening",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("game_time_control",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("game_termination",bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("game_id",bigquery.enums.SqlTypeNames.STRING),
-    ],
-    # Optionally, set the write disposition. BigQuery appends loaded rows
-    # to an existing table by default, but with WRITE_TRUNCATE write
-    # disposition it replaces the table with the loaded data.
-    write_disposition="WRITE_APPEND",
-)
-
-job = client.load_table_from_dataframe(
-    df, table_id, job_config=job_config
-)  # Make an API request.
-job.result()  # Wait for the job to complete.
-
-#current table rowcount
-table = client.get_table(table_id)  # Make an API request.
-print(
-    "Loaded {} rows and {} columns to {}".format(
-        table.num_rows, len(table.schema), table_id
-    )
-)
+    #return data
+    #load dict data to datafame
+    df = pd.DataFrame.from_dict(data,orient='index')
+    df['game_id']=df.index
+    df.reset_index(drop=True)
+    df = df[['game_type','game_result','game_date', 'game_time', 'player_id_white',
+        'player_id_black', 'white_start_elo', 'black_start_elo',
+        'white_game_elo', 'black_game_elo', 'game_opening', 'game_time_control',
+        'game_termination', 'game_id']]
+    df.describe()
+    #df.columns
+    #df.dtypes
+    return df
 
