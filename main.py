@@ -2,6 +2,8 @@ import os
 import new_game_parser as ngp
 import bigquery_load_table as blt
 import read_from_bigquery as rfb
+import pandas as pd
+import matplotlib.pyplot as plt
 
 #get list of files in Downloads folder
 dir = 'Downloads/'
@@ -23,7 +25,10 @@ for filename in os.listdir(dir):
 #send query to bigquery, will be used for dataviz
 query = 'SELECT LEFT(game_date,7) yyyymm,COUNT(*) FROM `valid-logic-327117.ChessGames.ChessGamesTable` GROUP BY 1'
 dataframe = rfb.bq_to_dataframe(query)
+dataframe['yyyymm'] = pd.to_datetime(dataframe['yyyymm'], format='%Y.%m')
 
 dataframe.head(100).sort_values(by="f0_", ascending=False)
-dataframe.dtypes
 
+
+ax = dataframe.plot.bar(x='yyyymm',y='f0_')
+plt.show()
