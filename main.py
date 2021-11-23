@@ -24,14 +24,14 @@ for filename in os.listdir(dir):
         continue
 
 #send query to bigquery, will be used for dataviz
-query = 'SELECT LEFT(game_date,7) yyyymm,COUNT(*) FROM `valid-logic-327117.ChessGames.ChessGamesTable` GROUP BY 1'
+query = 'SELECT LEFT(game_date,7) yyyymm,COUNT(*) game_count FROM `valid-logic-327117.ChessGames.ChessGamesTable` GROUP BY 1'
 dataframe = rfb.bq_to_dataframe(query)
 dataframe['yyyymm'] = pd.to_datetime(dataframe['yyyymm'], format='%Y.%m')
 
 dataframe = dataframe.head(100).sort_values(by="yyyymm", ascending=True)
 dataframe.head(100)
 
-ax = dataframe.plot.bar(x='yyyymm',y='f0_')
+ax = dataframe.plot.bar(x='yyyymm',y='game_count')
 #format y axis to remove sci-not
 ax.get_yaxis().set_major_formatter(
     mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
