@@ -5,6 +5,7 @@ import read_from_bigquery as rfb
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import matplotlib.dates as mdates
 
 #get list of files in Downloads folder
 dir = 'Downloads/'
@@ -30,11 +31,17 @@ dataframe['yyyymm'] = pd.to_datetime(dataframe['yyyymm'], format='%Y.%m')
 
 dataframe = dataframe.head(100).sort_values(by="yyyymm", ascending=True)
 dataframe.head(100)
+dataframe.dtypes
 
 ax = dataframe.plot.bar(x='yyyymm',y='game_count')
 #format y axis to remove sci-not
 ax.get_yaxis().set_major_formatter(
     mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 #format x axis to show only yyymm
+#close, but not perfect yet
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+ax.set_xlabel("Date")  # Naming the x-axis
+
+#plt.xticks(rotation=85)
 #asdf
 plt.show()
