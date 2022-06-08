@@ -31,10 +31,10 @@ class FileSplit:
         return((math.ceil(games/games_per_file)))
 
     #function for creating # of split files
-    def create_split_files(self,number_of_files,target_directory):
+    def create_split_files(self,number_of_files,target_directory,original_filename):
         """create the necessary number of empty files"""
         for filenum in range(number_of_files):
-            with open(f"{target_directory}/lichess_db_standard_rated_2013-08_SPLIT_{filenum}.pgn",'w') as split_file:
+            with open(f"{target_directory}/{original_filename}_SPLIT_{filenum}.pgn",'w') as split_file:
                 pass
 
     #function for opening the split files
@@ -82,24 +82,3 @@ class FileSplit:
                             break
                 print(f"Wrote {gamecnt} games to {target_file}")
 
-
-
-file = FileSplit()
-
-
-#get number of games in file
-results = file.count_games_lines(source_file_path='Downloads/lichess_db_standard_rated_2013-08.pgn')
-results
-
-#Get number of files needed based on games, and games/file
-files = file.calc_num_files(games = results['Games'],games_per_file = 10000)
-files
-
-#create the empty shell files
-file.create_split_files(number_of_files=files,target_directory='Downloads/TMP')
-
-#get list of files in a directory with a specific file type
-file_list = file.files_in_dir(directory = '/Users/philmcdaniel/Documents/GitHub/chess-game-analysis/Downloads/TMP',file_type='pgn')
-file_list
-
-file.load_split_files(source_file = 'Downloads/lichess_db_standard_rated_2013-08.pgn',target_file_list = file_list,games_per_file = 10000)

@@ -106,3 +106,9 @@ def parse_pgn_to_dict(filename):
     #df.dtypes
     return df
 
+
+df = parse_pgn_to_dict('Downloads/TMP/lichess_db_standard_rated_2016-12_SPLIT_0.pgn')
+
+df.head(5)
+
+df.describe()
