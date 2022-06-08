@@ -1,10 +1,11 @@
 import os
-import pgn_game_parser as pgn
-import interact_with_bigquery as bq
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.dates as mdates
+
+import pgn_game_parser as pgn
+import interact_with_bigquery as bq
 import split_file as split
 
 #instantiate class to split files
@@ -61,6 +62,7 @@ ax = dataframe.plot.bar(x='yyyymm',y='game_count')
 #format y axis to remove sci-not
 ax.get_yaxis().set_major_formatter(
     mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
 #format x axis to show only yyymm
 #close, but not perfect yet
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
