@@ -48,7 +48,8 @@ class FileSplit:
                 file_list.append(file)
             else:
                 pass
-
+        #these are string so it doesn't really work, but at least its not random order
+        file_list.sort()
         return(file_list)
     
     #function for writing to split files
