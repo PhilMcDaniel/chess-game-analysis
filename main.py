@@ -32,7 +32,7 @@ file.load_split_files(source_file = 'Downloads/lichess_db_standard_rated_2013-08
 
 
 #get list of files in Downloads folder
-dir = 'Downloads/'
+dir = 'Downloads/TMP'
 for filename in os.listdir(dir):
     fullpath = os.path.join(dir,filename)
     #print(fullpath)
@@ -55,7 +55,7 @@ dataframe['yyyymm'] = pd.to_datetime(dataframe['yyyymm'], format='%Y.%m')
 
 dataframe = dataframe.head(100).sort_values(by="yyyymm", ascending=True)
 dataframe.head(100)
-dataframe.dtypes
+
 
 ax = dataframe.plot.bar(x='yyyymm',y='game_count')
 #format y axis to remove sci-not

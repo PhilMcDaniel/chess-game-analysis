@@ -7,7 +7,7 @@ import configs
 class BigQuery():
     """Class that handles interactions with bigquery, reading and writing"""
 
-    def bq_to_dataframe(query_string):
+    def bq_to_dataframe(self,query_string):
         """Runs query against bigquery and returns a data frame of the results"""
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=configs.GOOGLE_APPLICATION_CREDENTIALS
         table_id = configs.TABLE_ID
@@ -27,7 +27,7 @@ class BigQuery():
         return(dataframe)
 
 
-    def load_df_to_BQ(dataframe):
+    def load_df_to_BQ(self,dataframe):
         """Loads dataframe to BigQuery table"""
         #load df to bigquery table
         # Construct a BigQuery client object.
