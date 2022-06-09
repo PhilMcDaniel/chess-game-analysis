@@ -12,22 +12,25 @@ file = split.FileSplit()
 #instantiate BQ class
 bigquery = bq.BigQuery()
 
+source_file_name = 'lichess_db_standard_rated_2016-12.pgn'
+
+
 #get number of games in file
-results = file.count_games_lines(source_file_path='Downloads/lichess_db_standard_rated_2013-08.pgn')
+results = file.count_games_lines(source_file_path='Downloads/{source_file_name}')
 results
 
 #Get number of files needed based on games, and games/file
-files = file.calc_num_files(games = results['Games'],games_per_file = 100000)
+files = file.calc_num_files(games = results['Games'],games_per_file = 1000000)
 files
 
 #create the empty shell files
-file.create_split_files(number_of_files=files,target_directory='Downloads/TMP',original_filename='lichess_db_standard_rated_2013-08')
+file.create_split_files(number_of_files=files,target_directory='Downloads/TMP',original_filename=source_file_name[:-4])
 
 #get list of files in a directory with a specific file type
 file_list = file.files_in_dir(directory = '/Users/philmcdaniel/Documents/GitHub/chess-game-analysis/Downloads/TMP',file_type='pgn')
 file_list
 
-file.load_split_files(source_file = 'Downloads/lichess_db_standard_rated_2013-08.pgn',target_file_list = file_list,games_per_file = 100000)
+file.load_split_files(source_file = 'Downloads/{source_file_name}',target_file_list = file_list,games_per_file = 1000000)
 
 
 #get list of files in Downloads folder
@@ -56,5 +59,8 @@ dataframe = dataframe.sort_values(by="yyyymm", ascending=True).reset_index()
 dataframe.head(100)
 
 
-fig = px.bar(dataframe, x='yyyymm', y='game_count')
+fig = px.bar(dataframe, x='yyyymm', y='game_count'
+,labels={'yyyymm':'Game Month','game_count':'Game Count'}
+,title='Chess Games Played Over Time'
+)
 fig.show()
