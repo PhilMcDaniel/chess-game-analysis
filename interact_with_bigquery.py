@@ -1,8 +1,7 @@
 from google.cloud import bigquery
 import configs
 import os
-import pgn_game_parser
-import configs
+
 
 class BigQuery():
     """Class that handles interactions with bigquery, reading and writing"""
