@@ -1,8 +1,6 @@
 import os
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-import matplotlib.dates as mdates
+import plotly.express as px
 
 import pgn_game_parser as pgn
 import interact_with_bigquery as bq
@@ -54,20 +52,9 @@ query = 'SELECT LEFT(game_date,7) yyyymm,COUNT(*) game_count FROM `valid-logic-3
 dataframe = bigquery.bq_to_dataframe(query)
 dataframe['yyyymm'] = pd.to_datetime(dataframe['yyyymm'], format='%Y.%m')
 
-dataframe = dataframe.head(100).sort_values(by="yyyymm", ascending=True)
+dataframe = dataframe.sort_values(by="yyyymm", ascending=True).reset_index()
 dataframe.head(100)
 
 
-ax = dataframe.plot.bar(x='yyyymm',y='game_count')
-#format y axis to remove sci-not
-ax.get_yaxis().set_major_formatter(
-    mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
-
-#format x axis to show only yyymm
-#close, but not perfect yet
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
-ax.set_xlabel("Date")  # Naming the x-axis
-
-#plt.xticks(rotation=85)
-#asdf
-plt.show()
+fig = px.bar(dataframe, x='yyyymm', y='game_count')
+fig.show()
