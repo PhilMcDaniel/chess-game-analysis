@@ -52,7 +52,7 @@ for filename in os.listdir(dir):
         os.remove(os.path.join(dir,filename))
     else:
         continue
-    
+print(f"All split files processed")    
 
 
 #send query to bigquery, will be used for dataviz
