@@ -12,7 +12,7 @@ file = split.FileSplit()
 #instantiate BQ class
 bigquery = bq.BigQuery()
 
-source_file_name = 'lichess_db_standard_rated_2017-01.pgn'
+source_file_name = 'lichess_db_standard_rated_2017-02.pgn'
 games_file = 200000
 
 #get number of games in file
@@ -52,7 +52,7 @@ for filename in os.listdir(dir):
         os.remove(os.path.join(dir,filename))
     else:
         continue
-print(f"All split files processed")    
+print(f"All split files processed")
 
 
 #send query to bigquery, will be used for dataviz
