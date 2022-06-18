@@ -12,23 +12,25 @@ file = split.FileSplit()
 #instantiate BQ class
 bigquery = bq.BigQuery()
 
-source_file_name = 'lichess_db_standard_rated_2017-02.pgn'
-games_file = 200000
+source_file_name = 'lichess_db_standard_rated_2018-03.pgn'
+games_file = 500000
+
 
 #get number of games in file
 results = file.count_games_lines(source_file_path=f'Downloads/{source_file_name}')
-results
+#results
 
 #Get number of files needed based on games, and games/file
 files = file.calc_num_files(games = results['Games'],games_per_file = games_file)
-files
+#files
 
 #create the empty shell files
 file.create_split_files(number_of_files=files,target_directory=f'Downloads/TMP',original_filename=source_file_name[:-4])
 
 #get list of files in a directory with a specific file type
-file_list = file.files_in_dir(directory = '/Users/philmcdaniel/Documents/GitHub/chess-game-analysis/Downloads/TMP',file_type='pgn')
-file_list
+dir = os.path.join(os.getcwd(),'Downloads/TMP')
+file_list = file.files_in_dir(directory = dir,file_type='pgn')
+#file_list
 
 file.load_split_files(source_file = f'Downloads/{source_file_name}',target_file_list = file_list,games_per_file = games_file)
 
