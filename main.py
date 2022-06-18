@@ -1,4 +1,5 @@
 import os
+from numpy import full
 import pandas as pd
 import plotly.express as px
 
@@ -12,7 +13,7 @@ file = split.FileSplit()
 #instantiate BQ class
 bigquery = bq.BigQuery()
 
-source_file_name = 'lichess_db_standard_rated_2018-03.pgn'
+source_file_name = 'lichess_db_standard_rated_2018-08.pgn'
 games_file = 500000
 
 
@@ -50,7 +51,7 @@ for filename in os.listdir(dir):
         print(f'{filename} has been loaded to bigquery successfully')
         
         #remove files from TMP/DOWNLOADS after loading to BQ
-        os.remove(os.path.join(dir,filename))
+        os.remove(fullpath)
     else:
         continue
 print(f"All split files processed")
@@ -65,8 +66,8 @@ dataframe = dataframe.sort_values(by="yyyymm", ascending=True).reset_index()
 dataframe.head(100)
 
 
-fig = px.bar(dataframe, x='yyyymm', y='game_count'
+fig = px.line(dataframe, x='yyyymm', y='game_count'
 ,labels={'yyyymm':'Game Month','game_count':'Game Count'}
-,title='Chess Games Played Over Time'
+,title='Lichess Games Played Over Time'
 )
 fig.show()
