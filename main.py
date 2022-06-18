@@ -36,7 +36,6 @@ file.load_split_files(source_file = f'Downloads/{source_file_name}',target_file_
 
 
 #get list of files in Downloads folder
-dir = 'Downloads/TMP'
 for filename in os.listdir(dir):
     fullpath = os.path.join(dir,filename)
     #print(fullpath)
