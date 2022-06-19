@@ -13,7 +13,7 @@ file = split.FileSplit()
 #instantiate BQ class
 bigquery = bq.BigQuery()
 
-source_file_name = 'lichess_db_standard_rated_2018-08.pgn'
+source_file_name = 'lichess_db_standard_rated_2018-09.pgn'
 games_file = 500000
 
 
@@ -67,7 +67,7 @@ dataframe.head(100)
 
 
 fig = px.line(dataframe, x='yyyymm', y='game_count'
-,labels={'yyyymm':'Game Month','game_count':'Game Count'}
+,labels={'yyyymm':'Month','game_count':'Game Count'}
 ,title='Lichess Games Played Over Time'
 )
 fig.show()
