@@ -1,10 +1,18 @@
 import pandas as pd
+import logging
+from time import perf_counter
+
+logging.basicConfig(level=logging.NOTSET)
+#logging.disable()
+
+
 
 def parse_pgn_to_dict(filename):
     '''Parses out the information from a .pgn file into a dictionary and then a dataframe'''
     line_num = 0
     results = 0
     data = {}
+    t1_start = perf_counter()
     with open(filename,'r') as file:
         for line in file:
             line = line.strip()
@@ -85,14 +93,20 @@ def parse_pgn_to_dict(filename):
                 results+=1
             else:
                 continue
+        t1_end = perf_counter()
+        t1_total = t1_end - t1_start
+
     games_processed = len(data)
-    print(f"{line_num} rows have been parsed")
-    print(f"{games_processed} games have been parsed")
-    print(f"{results} results have been parsed")
+    logging.info(f"{line_num} rows have been parsed")
+    logging.info(f"{games_processed} games have been parsed")
+    logging.info(f"{results} results have been parsed")
+    logging.info(f"File Processing Duration: {t1_total} seconds")
 
     #data['https://lichess.org/j1dkb5dw']
     #return data
     #load dict data to datafame
+
+    t2_start = perf_counter()
     df = pd.DataFrame.from_dict(data,orient='index')
     df['game_id']=df.index
     df['source_file_name'] = filename
@@ -101,6 +115,9 @@ def parse_pgn_to_dict(filename):
         'player_id_black', 'white_start_elo', 'black_start_elo',
         'white_game_elo', 'black_game_elo', 'game_opening', 'game_time_control',
         'game_termination', 'game_id','source_file_name']]
+    t2_end = perf_counter()
+    t2_total = t2_end - t2_start
+    logging.info(f"Dataframe From Dictionary Duration: {t2_total} seconds")
     #df.describe()
     #df.columns
     #df.dtypes

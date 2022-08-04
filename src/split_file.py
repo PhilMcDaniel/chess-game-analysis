@@ -55,8 +55,6 @@ class FileSplit:
     #function for writing to split files
     def load_split_files(self,source_file,target_file_list,games_per_file):
         """reads a source file and loads separate files up to a chess game limit"""
-        
-        
         #open source file
         with open(source_file,'r') as source_file:
             gamecnt=0

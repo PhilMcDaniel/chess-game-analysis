@@ -1,11 +1,18 @@
 import os
+import logging
+from time import perf_counter
+
 from numpy import full
 import pandas as pd
 import plotly.express as px
 
-import pgn_game_parser as pgn
-import interact_with_bigquery as bq
-import split_file as split
+import src.pgn_game_parser as pgn
+import src.interact_with_bigquery as bq
+import src.split_file as split
+
+logging.basicConfig(level=logging.NOTSET)
+#logging.disable()
+
 
 #instantiate class to split files
 file = split.FileSplit()
