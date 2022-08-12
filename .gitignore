@@ -133,3 +133,4 @@ dmypy.json
 configs.txt
 configs.py
 keys.json
+/metastore_db
