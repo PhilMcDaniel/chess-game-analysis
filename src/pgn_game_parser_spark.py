@@ -58,36 +58,36 @@ df_id.show(19,False)
 df_id.createOrReplaceTempView("games_with_overall_id")
 spark.sql("SELECT COUNT(*) FROM games_with_overall_id").show()
 
+#check for unique RowValue & counts
 spark.sql("""SELECT RowValue,COUNT(*) FROM games_with_overall_id GROUP BY RowValue""").show(36)
 spark.sql("""SELECT * FROM games_with_overall_id WHERE RowValue = '???'""").show(36)
 
+#get ID values for each "GameLine" record
+#currently not having PARTITION BY in the LEAD() is removing parallelization
+#TODO fix in the future
+df_id_boundary = spark.sql("""SELECT (ID-1) FirstRow,Value,(LEAD(ID,1) OVER(ORDER BY ID)-2)LastRow FROM games_with_overall_id WHERE RowValue = 'GameLink' ORDER BY ID""")
+#write to separate temp view so I can write SQL that joins the data
+df_id_boundary.createOrReplaceTempView("games_with_boundary_id")
+
+
+#join data together to prep for pivoting
+df_pre = spark.sql("SELECT o.*,b.Value as GameId FROM games_with_overall_id o LEFT JOIN games_with_boundary_id b ON o.ID BETWEEN b.FirstRow AND b.LastRow")
+df_pre.createOrReplaceTempView("games_pre")
+#check counts of RowValue
+spark.sql("SELECT * FROM games_pre").show(10,False)
 
 
 
-
-
-
-#row number on the data to line up each to set up a pivot later
-df_row_num = spark.sql("SELECT *,row_number() OVER (PARTITION BY RowValue ORDER BY NULL)totalrownum FROM games")
-df_row_num.show(36,truncate=False)
-
-#replace temp table with newly added column
-df_row_num.createOrReplaceTempView("games")
-spark.sql("SELECT * FROM games WHERE RowValue = ").show(36)
 
 #pivot the data on "occurance (rownum partitioned by Rowvalue calculated column)"
-
-df_pvt_single_game= df_pvt_single_game.groupBy("rownum").pivot("RowValue",["Event","GameLink","WhiteRatingChange","BlackRatingChange","WhiteELO","BlackELO","WhitePlayer","BlackPlayer","Result","Date","Time","Opening","TimeControl","GameTermination","GameMoves","ECO"]).agg(max("value"))
-df_pvt_single_game.createOrReplaceTempView("games")
+df_pvt= df_pre.groupBy("Id").pivot("RowValue",["Event","GameLink","WhiteRatingChange","BlackRatingChange","WhiteELO","BlackELO","WhitePlayer","BlackPlayer","Result","Date","Time","Opening","TimeControl","GameTermination","GameMoves","ECO","WhitePlayerTitle","BlackPlayerTitle"]).agg(max("value"))
+df_pvt.createOrReplaceTempView("games")
+spark.sql("SELECT * FROM games").show(20,False)
 
 
 spark.sql("""SELECT * FROM games WHERE GameLink='[Site "https://lichess.org/e4gb7ja6"]'""").show(36,False)
 
 #pivot test
 #df_pvt_single_game.groupBy("Value").pivot("RowValue",["Event","GameLink"]).agg(max("value")).show()
-#not working correctly. won't ever work??? Agg function and grouping will cause issues? Need to rely on order of rows
 
 
-#try using SQL statements and min/max boundries for each game, 2nd table that I can join to
-#more efficient row_num() calculation
-#first/last functions?
