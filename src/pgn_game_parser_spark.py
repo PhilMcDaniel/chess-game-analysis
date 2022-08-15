@@ -65,7 +65,7 @@ spark.sql("""SELECT * FROM games_with_overall_id WHERE RowValue = '???'""").show
 #get ID values for each "GameLine" record
 #currently not having PARTITION BY in the LEAD() is removing parallelization
 #TODO fix in the future
-df_id_boundary = spark.sql("""SELECT (ID-1) FirstRow,Value,(LEAD(ID,1) OVER(ORDER BY ID)-2)LastRow FROM games_with_overall_id WHERE RowValue = 'GameLink' ORDER BY ID""")
+df_id_boundary = spark.sql("""SELECT (ID-1) FirstRow,Value,(LEAD(ID,1) OVER(ORDER BY ID)-2)LastRow FROM games_with_overall_id WHERE RowValue = 'GameLink' ORDER BY ID""").show(20)
 #write to separate temp view so I can write SQL that joins the data
 df_id_boundary.createOrReplaceTempView("games_with_boundary_id")
 
@@ -86,8 +86,3 @@ spark.sql("SELECT * FROM games").show(20,False)
 
 
 spark.sql("""SELECT * FROM games WHERE GameLink='[Site "https://lichess.org/e4gb7ja6"]'""").show(36,False)
-
-#pivot test
-#df_pvt_single_game.groupBy("Value").pivot("RowValue",["Event","GameLink"]).agg(max("value")).show()
-
-
