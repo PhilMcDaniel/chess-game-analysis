@@ -48,7 +48,7 @@ def write_lichess_data_to_csv():
     #if file already exists, only append, else full write
     #TODO
 
-    #df.to_csv("\lichess_rating_history.csv",index_label='row')
-    return print(df.head(5))
+    df.to_csv("/opt/airflow/dags/output/lichess_rating_history.csv",index_label='row')
+    return print(os.getcwd()," | ",df.head(5))
 
 #write_lichess_data_to_csv()
