@@ -1,2 +1,4 @@
 row,username,game_mode,rating,rating_deviation,rating_games_played,recent_progress,rating_rank,rating_percentile,wins,draws,losses
 0,pcmcd,blitz,1229.41,45.09,643,-19,464253,27.9,310,17,321
+0,pcmcd,blitz,1207.67,45.45,650,-33,478645,26.2,311,18,326
+0,pcmcd,blitz,1207.67,45.45,650,-33,478645,26.2,311,18,326

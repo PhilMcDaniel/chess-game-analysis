@@ -41,14 +41,14 @@ def write_lichess_data_to_csv():
     df = df.rename(columns={"level_0":"username","level_1":"game_mode"})
     #df.head()
 
-    #write to csv
-
     #create direcory if not exists
     #TODO
     #if file already exists, only append, else full write
-    #TODO
-
-    df.to_csv("/opt/airflow/dags/output/lichess_rating_history.csv",index_label='row')
+    if not os.path.exists('./output/lichess_rating_history.csv'):
+        df.to_csv("./output/lichess_rating_history.csv",index_label='row')
+    else:
+        df.to_csv("./output/lichess_rating_history.csv",index_label='row',mode='a',header=False)
+    
     return print(os.getcwd()," | ",df.head(5))
 
 #write_lichess_data_to_csv()
