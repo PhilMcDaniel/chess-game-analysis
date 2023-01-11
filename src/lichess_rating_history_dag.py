@@ -12,27 +12,28 @@ import lichess_rating_history
 #docker cp lichess_rating_history.py :/opt/airflow/dags/lichess_rating_history.py
 
 args = {
-            'owner': 'phil',    
+            'owner': 'Phil',    
             #'start_date': airflow.utils.dates.days_ago(2),
             # 'end_date': datetime(),
             # 'depends_on_past': False,
             'email': ['mcdanipc@gmail.com'],
-            #'email_on_failure': False,
+            'email_on_failure': True,
             #'email_on_retry': False,
             # If a task fails, retry it once after waiting
             # at least 5 minutes
-            #'retries': 1,
-            'retry_delay': timedelta(minutes=5),
+            'retries': 1,
+            'retry_delay': timedelta(minutes=2),
         }
 
 dag = DAG(
 	dag_id = "simple_python_dag",
 	default_args=args,
-	# schedule_interval='0 0 * * *',
-	schedule_interval='@once',	
-	dagrun_timeout=timedelta(minutes=60),
+	schedule_interval='0 */12 * * *',
+	#schedule_interval='@once',	
+	dagrun_timeout=timedelta(minutes=2),
 	description='use case of python operator in airflow',
-	start_date=datetime(year=2022, month=2, day=1)
+	start_date=datetime(year=2023, month=1, day=9),
+    catchup=False,
     )
 
 t1 = PythonOperator(
