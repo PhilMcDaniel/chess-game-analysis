@@ -1,9 +1,10 @@
 import requests
 import pandas as pd
 import os
+from datetime import datetime
 
 def write_lichess_data_to_csv():
-    usernames = ['pcmcd','fins','ericrosen']
+    usernames = ['pcmcd','fins','ericrosen','isodor','ryu_protex','okayengineer','rebeccaharris','alireza2003','wastee2','slipperyj']
     modes = ["ultraBullet","bullet","blitz","rapid","classical","correspondence","chess960","crazyhouse","antichess","atomic","horde","kingOfTheHill","racingKings","threeCheck"]
 
     url = 'https://lichess.org/api/user/{username}/perf/{perf}'
@@ -13,13 +14,12 @@ def write_lichess_data_to_csv():
     for player in usernames:
         urls.append(url.replace("{username}",player).replace("{perf}",modes[2]))
     
-    
+    data_dict = {}
     for url in urls:
 
         response = requests.get(url)
         json_response = response.json()
 
-        data = {}
         username = json_response['user']['name']
 
         rating = json_response['perf']['glicko']['rating']
@@ -34,15 +34,16 @@ def write_lichess_data_to_csv():
         draws = json_response['stat']['count']['draw']
         losses = json_response['stat']['count']['loss']
 
-        data[(username,modes[2])] = {"rating":rating,"rating_deviation":rating_deviation,"rating_games_played":rating_games_played,"recent_progress":recent_progress,"rating_rank":rating_rank,"rating_percentile":rating_percentile,"wins":wins,"draws":draws,"losses":losses}
+        data_dict[(username,modes[2])] = {"rating":rating,"rating_deviation":rating_deviation,"rating_games_played":rating_games_played,"recent_progress":recent_progress,"rating_rank":rating_rank,"rating_percentile":rating_percentile,"wins":wins,"draws":draws,"losses":losses}
 
         #data[('pcmcd','blitz')]
 
         #dictionary to dataframe
-        df = pd.DataFrame.from_dict(data,orient='index').reset_index()
+        df = pd.DataFrame.from_dict(data_dict,orient='index').reset_index()
         df = df.rename(columns={"level_0":"username","level_1":"game_mode"})
+        df['etl_datetime'] = datetime.now()
         
-        #print(df.head())
+        # #print(df.head())
 
         #create direcory if not exists
         #TODO
