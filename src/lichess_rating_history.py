@@ -38,20 +38,20 @@ def write_lichess_data_to_csv():
 
         #data[('pcmcd','blitz')]
 
-        #dictionary to dataframe
-        df = pd.DataFrame.from_dict(data_dict,orient='index').reset_index()
-        df = df.rename(columns={"level_0":"username","level_1":"game_mode"})
-        df['etl_datetime'] = datetime.now()
+    #dictionary to dataframe
+    df = pd.DataFrame.from_dict(data_dict,orient='index').reset_index()
+    df = df.rename(columns={"level_0":"username","level_1":"game_mode"})
+    df['etl_datetime'] = datetime.now()
         
-        # #print(df.head())
+    # #print(df.head())
 
-        #create direcory if not exists
-        #TODO
-        #if file already exists, only append, else full write
-        if not os.path.exists('/opt/airflow/dags/output/lichess_rating_history.csv'):
-            df.to_csv("/opt/airflow/dags/output/lichess_rating_history.csv",index_label='row')
-        else:
-            df.to_csv("/opt/airflow/dags/output/lichess_rating_history.csv",index_label='row',mode='a',header=False)
+    #create direcory if not exists
+    #TODO
+    #if file already exists, only append, else full write
+    if not os.path.exists('/opt/airflow/dags/output/lichess_rating_history.csv'):
+        df.to_csv("/opt/airflow/dags/output/lichess_rating_history.csv",index_label='row')
+    else:
+        df.to_csv("/opt/airflow/dags/output/lichess_rating_history.csv",index_label='row',mode='a',header=False)
         
     return print(df.head(5))
 
