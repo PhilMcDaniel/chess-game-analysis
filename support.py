@@ -9,12 +9,12 @@ class Support():
         ...
 
 
-    def full_path(self, filename):
+    def full_path(self, file_name):
         """
         
-        Returns the full file path from the filename
+        Returns the full file path from the file_name
         Parameters:
-            filename - The filename of the pg
+            file_name - The file name of the pg
         Returns:
             full_path - The full path of the file
         Raises:
@@ -23,13 +23,13 @@ class Support():
         """
         
         # make sure the file exists in the expected location
-        # should exist done one level in the Downloads folder
+        # should exist down one level in the data folder
 
 
         #TODO create data folder if it doesn't exist
     
         expected_dir = os.path.join(os.getcwd(), 'data')
-        full_path = os.path.join(expected_dir, filename) 
+        full_path = os.path.join(expected_dir, file_name) 
         if os.path.isfile(full_path):
             return full_path
         else:

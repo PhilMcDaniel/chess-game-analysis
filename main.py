@@ -15,13 +15,20 @@ logging.basicConfig(level=logging.NOTSET)
 
 support = sup.Support()
 
-source_file_name = support.full_path('sample.pgn')
+file_name = support.full_path('sample.pgn')
 
 
 
 def main():
     
-   print(source_file_name)
+    
+    line_num = 0
+    with open(file_name,'r') as file:
+        for line in file:
+            line = line.strip()
+            line_num += 1
+    print(f"file: {file_name} has {line_num} lines.")
+
 
 
 if __name__ == "__main__":
