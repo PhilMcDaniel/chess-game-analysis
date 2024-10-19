@@ -134,5 +134,6 @@ configs.txt
 configs.py
 keys.json
 
-# allow sample.pgn inside downloads/
-!Downloads/sample.pgn
+# Un-ignore the specific file /data/sample.pgn
+/data/*
+!/data/sample.pgn

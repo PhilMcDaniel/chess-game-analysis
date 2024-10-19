@@ -24,8 +24,11 @@ class Support():
         
         # make sure the file exists in the expected location
         # should exist done one level in the Downloads folder
+
+
+        #TODO create data folder if it doesn't exist
     
-        expected_dir = os.path.join(os.getcwd(), 'Downloads')
+        expected_dir = os.path.join(os.getcwd(), 'data')
         full_path = os.path.join(expected_dir, filename) 
         if os.path.isfile(full_path):
             return full_path
