@@ -10,6 +10,11 @@ logging.basicConfig(level=logging.NOTSET)
 
 class DownloadDecompressFile():
     """Class that handles downloading and decompressing files"""
+    ...
+    
+    def __init__(self):
+        ...
+
     #download method
     def download_file(url, filename):
         ''' Downloads file from the url and save it as filename '''

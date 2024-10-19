@@ -2,7 +2,12 @@ import os
 
 class Support():
     ...
-    # get full path for file (./downloads/file)
+
+
+
+    def __init__(self):
+        ...
+
 
     def full_path(self, filename):
         """

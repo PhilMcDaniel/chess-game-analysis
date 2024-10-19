@@ -3,6 +3,9 @@ import math
 
 class FileSplit:
     """Reads downloaded and decompressed pgn file from Lichess & splits into smaller files for parallel processing"""
+    ...
+    def __init__(self):
+        ...
 
     def count_games_lines(self,source_file_path):
         """Count the number of lines & chess games in the source file"""
