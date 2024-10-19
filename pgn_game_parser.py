@@ -1,14 +1,25 @@
 import pandas as pd
 import logging
+import os
 from time import perf_counter
+
 
 logging.basicConfig(level=logging.NOTSET)
 #logging.disable()
 
 
+class PGNS():
+    ...
+
+    #TODO: _init_
+
 
 def parse_pgn_to_dict(filename):
     '''Parses out the information from a .pgn file into a dictionary and then a dataframe'''
+    
+
+
+
     line_num = 0
     results = 0
     data = {}
