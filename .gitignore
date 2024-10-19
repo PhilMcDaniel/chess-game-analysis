@@ -133,3 +133,6 @@ dmypy.json
 configs.txt
 configs.py
 keys.json
+
+# allow sample.pgn inside downloads/
+!Downloads/sample.pgn
