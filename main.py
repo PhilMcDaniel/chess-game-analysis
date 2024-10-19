@@ -13,21 +13,15 @@ import support as sup
 logging.basicConfig(level=logging.NOTSET)
 #logging.disable()
 
-support = sup.Support()
 
-file_name = support.full_path('sample.pgn')
+file_name = sup.full_path('sample.pgn')
 
 
 
 def main():
     
-    
-    line_num = 0
-    with open(file_name,'r') as file:
-        for line in file:
-            line = line.strip()
-            line_num += 1
-    print(f"file: {file_name} has {line_num} lines.")
+    file = pgn.PGNS()
+    file.parse_pgn_to_dict(file_name)
 
 
 
