@@ -21,9 +21,9 @@ file_name = sup.full_path('sample.pgn')
 def main():
     
     file = pgn.PGNS()
-    file.parse_pgn_to_dict(file_name)
-
-
+    games = file.parse_pgn_to_dict(file_name)
+    games_pddf = file.dict_to_pddf(games)
+    
 
 if __name__ == "__main__":
     main()

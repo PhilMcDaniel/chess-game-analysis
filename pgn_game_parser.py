@@ -9,17 +9,29 @@ logging.basicConfig(level=logging.NOTSET)
 
 
 class PGNS():
-    """"""
+    """
+    Class to represent the PGN file of chess games
+    """
 
 
-    def parse_pgn_to_dict(self,filename):
-        '''Parses out the information from a .pgn file into a dictionary and then a dataframe'''
+    def parse_pgn_to_dict(self,file_name):
+        '''    
+        Parameters:
+            file_name - The file name of the pgn
+        Returns:
+            data - dict: Dictionary of games from the pgn file
+        Sets:
+            PGNS.lines
+            PGNS.games
+        Raises:
+            
+        '''
         
         line_num = 0
         results = 0
         data = {}
         t1_start = perf_counter()
-        with open(filename,'r') as file:
+        with open(file_name,'r') as file:
             for line in file:
                 line = line.strip()
                 line_num += 1
@@ -103,11 +115,11 @@ class PGNS():
             t1_total = t1_end - t1_start
 
             self.lines = line_num
-            self.games = results
+            self.games = len(data)
 
-        games_processed = len(data)
-        logging.info(f"{line_num} rows have been parsed")
-        logging.info(f"{games_processed} games have been parsed")
+        
+        logging.info(f"{self.lines} rows have been parsed")
+        logging.info(f"{self.games} games have been parsed")
         logging.info(f"{results} results have been parsed")
         logging.info(f"File Processing Duration: {t1_total} seconds")
 
@@ -115,5 +127,18 @@ class PGNS():
         #return data
         #load dict data to datafame
 
-
         return data
+    
+    def dict_to_pddf(self,dict):
+        """
+        Parameters:
+            dict - A dictionary of chess games
+        Returns:
+            games_pddf - pandas dataframe: Games from pgn flattened to 1 row per game
+        Sets:
+        Raises:  
+        """
+        
+        games_pddf = pd.DataFrame.from_dict(dict, orient='index')
+        
+        return games_pddf
