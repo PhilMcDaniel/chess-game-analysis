@@ -20,10 +20,15 @@ file_name = sup.full_path('sample.pgn')
 
 def main():
     
+    #TODO: download file
+    #TODO: decompress file
+
     file = pgn.PGNS()
     games = file.parse_pgn_to_dict(file_name)
     games_pddf = file.dict_to_pddf(games)
     
+    #TODO convert to .parquet
+    #TODO upload to cloud
 
 if __name__ == "__main__":
     main()
