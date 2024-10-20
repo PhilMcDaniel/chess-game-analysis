@@ -24,12 +24,14 @@ def main():
     #TODO: decompress file
 
     file = pgn.PGNS()
+    # parse .pgn to dict of games
     games = file.parse_pgn_to_dict(file_name)
+    # turn dict of games into pddf
     games_pddf = file.dict_to_pddf(games)
     print(games['https://lichess.org/szom2tog'])
+    # write pddf to .parquet
+    file.pddf_to_parquet(games_pddf,file_name)
     
-    #TODO convert to .parquet
-    pq = file.pddf_to_parquet(games_pddf,file_name)
     #TODO upload to cloud
 
 if __name__ == "__main__":
