@@ -106,6 +106,7 @@ class PGNS():
                                     ,'game_opening':game_opening
                                     ,'game_time_control':game_time_control
                                     ,'game_termination':game_termination
+                                    ,'source_file':os.path.basename(file_name)
                                     }
                 if line[:7] == '[Result':
                     results+=1
