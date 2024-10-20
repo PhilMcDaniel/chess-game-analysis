@@ -40,6 +40,10 @@ class DownloadDecompressFile():
             logging.info("Download complete")
         else:
             logging.info('Downloaded file already exists')
+        
+        compressed_file_size = round((os.path.getsize(filename) / (1024 ** 2)),2)
+        logging.info(f"downloaded file size: {compressed_file_size} MB")
+        
         return filename
 
     # decompress
@@ -68,4 +72,8 @@ class DownloadDecompressFile():
             logging.info(f"Decompress complete on {input_filename} to {output_filename}")
         else:
             logging.info(f"Decompressed file already exists")
+        
+        decompressed_file_size = round((os.path.getsize(output_filename) / (1024 ** 2)),2)
+        logging.info(f"decompressed file size: {decompressed_file_size} MB")
+        
         return output_filename
