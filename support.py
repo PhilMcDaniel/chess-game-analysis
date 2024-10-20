@@ -28,7 +28,7 @@ def does_file_exist(full_path):
     if os.path.isfile(full_path):
         return True
     else:
-        raise Exception(f"File does not exist at the expected location:{full_path}")
+        return False
 
 def measure_time(func):
     """
