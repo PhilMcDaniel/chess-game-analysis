@@ -1,7 +1,7 @@
 import os
 import requests
 import time
-import bz2
+import zstandard as zstd
 import logging
 from support import measure_time
 
@@ -10,7 +10,9 @@ logging.basicConfig(level=logging.NOTSET)
 
 
 class DownloadDecompressFile():
-    """Class that handles downloading and decompressing files"""
+    """
+    Class that handles downloading and decompressing files
+    """
     ...
     
     def __init__(self):
@@ -18,7 +20,7 @@ class DownloadDecompressFile():
 
     #download method
     @measure_time
-    def download_file(url, filename):
+    def download_file(self,url, filename):
         ''' Downloads file from the url and save it as filename '''
         # check if file already exists
         if not os.path.isfile(filename):
@@ -35,21 +37,24 @@ class DownloadDecompressFile():
             logging.info("Download complete")
         else:
             logging.info('File exists')
+        return self
 
     # decompress
     @measure_time
-    def bz2_decompress(filename):
-        '''Decompresses a .bz2 file'''
-        #only decompress file if the referenced file exists, and there isn't an existing non-.bs2 file in the dir
-        if os.path.isfile(filename) and not os.path.isfile(filename[:-4]):
-            #take off last 4 chars of filename (strip '.bz2')
-            logging.info('Starting decompression')
-            zipfile = bz2.BZ2File(filename)
-            data = zipfile.read()
-            newfilename = filename[:-4]
-            open(newfilename, 'wb').write(data)
-            logging.info('Decompression complete')
-        elif os.path.isfile(filename[:-4]):
-            logging.info('Decompressed file already exists')
-        else:
-            logging.info('File does not exist')
+    def decompress_zst(self,input_filename,output_filename):
+        '''
+        Decompresses a .zst file
+        '''
+        #TODO: error handling if input_filename DNE
+        #TODO: check if output_filename alreadyexists
+
+        # Open the .zst file in binary mode
+        logging.info(f"Starting decompression of: {input_filename}")
+        with open(input_filename, 'rb') as compressed_file:
+            dctx = zstd.ZstdDecompressor()
+        
+            # Open the output file and decompress into it
+            with open(output_filename, 'wb') as decompressed_file:
+                dctx.copy_stream(compressed_file, decompressed_file)
+        logging.info(f"Decompress complete on {input_filename}:{output_filename}")
+        return self

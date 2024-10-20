@@ -1,14 +1,12 @@
 import os
 import logging
-from time import perf_counter
-
-from numpy import full
 import pandas as pd
-import plotly.express as px
+
 
 import pgn_game_parser as pgn
 import split_file as split
 import support as sup
+import download_decompress as down_decomp
 
 logging.basicConfig(level=logging.NOTSET)
 #logging.disable()
@@ -21,7 +19,10 @@ file_name = sup.full_path('sample.pgn')
 def main():
     
     #TODO: download file
+    dd = down_decomp.DownloadDecompressFile()
+    dd.download_file(url='https://database.lichess.org/standard/lichess_db_standard_rated_2013-01.pgn.zst',filename='201301.pgn.zst')
     #TODO: decompress file
+    #dd.bz2_decompress(filename='201301.pgn.zst')
 
     file = pgn.PGNS()
     # parse .pgn to dict of games
