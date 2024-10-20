@@ -120,10 +120,6 @@ class PGNS():
         logging.info(f"{self.games} games have been parsed")
         logging.info(f"{results} results have been parsed")
 
-        #data['https://lichess.org/j1dkb5dw']
-        #return data
-        #load dict data to datafame
-
         return data
     
     @measure_time
