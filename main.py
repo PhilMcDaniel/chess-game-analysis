@@ -29,7 +29,9 @@ def main():
     print(games['https://lichess.org/szom2tog'])
     
     #TODO convert to .parquet
+    pq = file.pddf_to_parquet(games_pddf,file_name)
     #TODO upload to cloud
 
 if __name__ == "__main__":
     main()
+

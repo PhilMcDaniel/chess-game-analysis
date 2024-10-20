@@ -137,3 +137,16 @@ class PGNS():
         games_pddf = pd.DataFrame.from_dict(dict, orient='index')
         
         return games_pddf
+    
+    @measure_time
+    def pddf_to_parquet(self,pddf,parquet_file_name):
+        # Ensure that the passed object is a pandas DataFrame
+        if isinstance(pddf, pd.DataFrame):
+            # Save the DataFrame as a .parquet file
+            # TODO: move to /data/ folder for now
+            pddf.to_parquet(f"{parquet_file_name}.parquet")
+            logging.info(f"dataframe has been written to {parquet_file_name}.parquet")
+        else:
+            raise Exception("The provided ")
+
+        return self
