@@ -40,7 +40,7 @@ class DownloadDecompressFile():
             logging.info("Download complete")
         else:
             logging.info('Downloaded file already exists')
-        return self
+        return filename
 
     # decompress
     @measure_time

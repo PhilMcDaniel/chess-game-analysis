@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import os
 
-from support import measure_time
+from support import measure_time, does_file_exist
 
 
 logging.basicConfig(level=logging.NOTSET)
@@ -112,10 +112,10 @@ class PGNS():
                     results+=1
                 else:
                     continue
-
+            
             self.lines = line_num
             self.games = len(data)
-
+            # TODO: add properties for dict & pddf size
         
         logging.info(f"{self.lines} rows have been parsed")
         logging.info(f"{self.games} games have been parsed")
@@ -140,12 +140,16 @@ class PGNS():
     
     @measure_time
     def pddf_to_parquet(self,pddf,parquet_file_name):
+        parquet_file_name = f"{parquet_file_name}.parquet"
         # Ensure that the passed object is a pandas DataFrame
         if isinstance(pddf, pd.DataFrame):
             # Save the DataFrame as a .parquet file
-            # TODO: move to /data/ folder for now
-            pddf.to_parquet(f"{parquet_file_name}.parquet")
-            logging.info(f"dataframe has been written to {parquet_file_name}.parquet")
+            # TODO: don't write file if it already exists
+            if does_file_exist(parquet_file_name):
+                logging.info(f"parquet file already exists: {parquet_file_name}")
+            else:
+                pddf.to_parquet(parquet_file_name)
+                logging.info(f"dataframe has been written to {parquet_file_name}")
         else:
             raise Exception("The provided ")
 

@@ -18,20 +18,21 @@ logging.basicConfig(level=logging.NOTSET)
 @sup.measure_time
 def main():
     
-    #TODO: download file
+    # download file
     dd = down_decomp.DownloadDecompressFile()
-    dd.download_file(url='https://database.lichess.org/standard/lichess_db_standard_rated_2013-01.pgn.zst',filename='201301.pgn.zst')
-    #TODO: decompress file
-    file_name = dd.decompress_zst(input_filename='201301.pgn.zst', output_filename='201301.pgn')
+    # TODO: dynamically name the file when downloading
+    downloaded_file = dd.download_file(url='https://database.lichess.org/standard/lichess_db_standard_rated_2013-01.pgn.zst',filename='201301.pgn.zst')
+    # decompress file
+    decompressed_file_name = dd.decompress_zst(input_filename='201301.pgn.zst', output_filename='201301.pgn')
 
     file = pgn.PGNS()
     # parse .pgn to dict of games
-    games = file.parse_pgn_to_dict(file_name)
+    games = file.parse_pgn_to_dict(decompressed_file_name)
     # turn dict of games into pddf
     games_pddf = file.dict_to_pddf(games)
     print(games['https://lichess.org/szom2tog'])
     # write pddf to .parquet
-    file.pddf_to_parquet(games_pddf,file_name)
+    file.pddf_to_parquet(games_pddf,decompressed_file_name)
     
     #TODO upload to cloud
 
