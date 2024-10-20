@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.NOTSET)
 file_name = sup.full_path('sample.pgn')
 
 
-
+@sup.measure_time
 def main():
     
     #TODO: download file

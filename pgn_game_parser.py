@@ -1,7 +1,8 @@
 import pandas as pd
 import logging
 import os
-from time import perf_counter
+
+from support import measure_time
 
 
 logging.basicConfig(level=logging.NOTSET)
@@ -13,7 +14,7 @@ class PGNS():
     Class to represent the PGN file of chess games
     """
 
-
+    @measure_time
     def parse_pgn_to_dict(self,file_name):
         '''    
         Parameters:
@@ -30,7 +31,6 @@ class PGNS():
         line_num = 0
         results = 0
         data = {}
-        t1_start = perf_counter()
         with open(file_name,'r') as file:
             for line in file:
                 line = line.strip()
@@ -111,8 +111,6 @@ class PGNS():
                     results+=1
                 else:
                     continue
-            t1_end = perf_counter()
-            t1_total = t1_end - t1_start
 
             self.lines = line_num
             self.games = len(data)
@@ -121,7 +119,6 @@ class PGNS():
         logging.info(f"{self.lines} rows have been parsed")
         logging.info(f"{self.games} games have been parsed")
         logging.info(f"{results} results have been parsed")
-        logging.info(f"File Processing Duration: {t1_total} seconds")
 
         #data['https://lichess.org/j1dkb5dw']
         #return data
@@ -129,6 +126,7 @@ class PGNS():
 
         return data
     
+    @measure_time
     def dict_to_pddf(self,dict):
         """
         Parameters:
