@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(level=logging.NOTSET)
 
-def full_path(file_name):
+def full_path(file_name,child_folder='data'):
     """
     Returns the full file path from the file_name
     Parameters:
@@ -16,17 +16,20 @@ def full_path(file_name):
     """
     
     #should exist down one level in the data folder
-    expected_dir = os.path.join(os.getcwd(), 'data')
-    #if doesn't exist, create the folder
-    os.makedirs(expected_dir, exist_ok=True)
-    full_path = os.path.join(expected_dir, file_name) 
+    expected_dir = os.path.join(os.getcwd(), child_folder)
+    full_path = os.path.join(expected_dir, file_name)
+    return full_path
     
+def does_file_exist(full_path):
+    """
+    
+    """
     #raise an error if the file doesn't exist
     if os.path.isfile(full_path):
-        return full_path
+        return True
     else:
         raise Exception(f"File does not exist at the expected location:{full_path}")
-    
+
 def measure_time(func):
     """
     Function to be used as a decorator to measure the duration of other functions
