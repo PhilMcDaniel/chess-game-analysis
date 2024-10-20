@@ -26,6 +26,7 @@ def main():
     file = pgn.PGNS()
     games = file.parse_pgn_to_dict(file_name)
     games_pddf = file.dict_to_pddf(games)
+    print(games['https://lichess.org/szom2tog'])
     
     #TODO convert to .parquet
     #TODO upload to cloud
