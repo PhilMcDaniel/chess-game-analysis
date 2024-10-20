@@ -1,5 +1,6 @@
 import pandas as pd
 import logging
+import sys
 import os
 
 from support import measure_time, does_file_exist
@@ -115,11 +116,13 @@ class PGNS():
             
             self.lines = line_num
             self.games = len(data)
-            # TODO: add properties for dict & pddf size
-        
+            self.dict_size = round(sys.getsizeof(data)/ (1024 ** 2),1)
+
+
         logging.info(f"{self.lines} rows have been parsed")
         logging.info(f"{self.games} games have been parsed")
         logging.info(f"{results} results have been parsed")
+        logging.info(f"data dictionary size: {self.dict_size} MB")
 
         return data
     
@@ -135,7 +138,8 @@ class PGNS():
         """
         
         games_pddf = pd.DataFrame.from_dict(dict, orient='index')
-        
+        self.pddf_size = round((games_pddf.memory_usage(deep=True).sum() / (1024 ** 2)),2)
+        logging.info(f"pddf size: {self.pddf_size} MB")
         return games_pddf
     
     @measure_time
@@ -153,4 +157,7 @@ class PGNS():
         else:
             raise Exception("The provided ")
 
+        self.parquet_size = round((os.path.getsize(parquet_file_name) / (1024 ** 2)),2)
+
+        logging.info(f".parquet size: {self.parquet_size} MB")
         return self

@@ -30,11 +30,13 @@ def main():
     games = file.parse_pgn_to_dict(decompressed_file_name)
     # turn dict of games into pddf
     games_pddf = file.dict_to_pddf(games)
-    print(games['https://lichess.org/szom2tog'])
     # write pddf to .parquet
     file.pddf_to_parquet(games_pddf,decompressed_file_name)
     
     #TODO upload to cloud
+
+    #print single row for debugging
+    print(games['https://lichess.org/szom2tog'])
 
 if __name__ == "__main__":
     main()
