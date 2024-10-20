@@ -15,14 +15,13 @@ def full_path(file_name):
         Exception - If the file does not exist at the expected location
     """
     
-    # make sure the file exists in the expected location
-    # should exist down one level in the data folder
-
-
-    #TODO create data folder if it doesn't exist
-
+    #should exist down one level in the data folder
     expected_dir = os.path.join(os.getcwd(), 'data')
+    #if doesn't exist, create the folder
+    os.makedirs(expected_dir, exist_ok=True)
     full_path = os.path.join(expected_dir, file_name) 
+    
+    #raise an error if the file doesn't exist
     if os.path.isfile(full_path):
         return full_path
     else:
