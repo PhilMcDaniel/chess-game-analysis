@@ -3,6 +3,7 @@ import requests
 import time
 import bz2
 import logging
+from support import measure_time
 
 logging.basicConfig(level=logging.NOTSET)
 #logging.disable()
@@ -16,6 +17,7 @@ class DownloadDecompressFile():
         ...
 
     #download method
+    @measure_time
     def download_file(url, filename):
         ''' Downloads file from the url and save it as filename '''
         # check if file already exists
@@ -35,6 +37,7 @@ class DownloadDecompressFile():
             logging.info('File exists')
 
     # decompress
+    @measure_time
     def bz2_decompress(filename):
         '''Decompresses a .bz2 file'''
         #only decompress file if the referenced file exists, and there isn't an existing non-.bs2 file in the dir
