@@ -3,7 +3,7 @@ import logging
 import sys
 import os
 
-from support import measure_time, does_file_exist
+from support import measure_time, does_file_exist,full_path
 
 
 logging.basicConfig(level=logging.NOTSET)
@@ -139,25 +139,25 @@ class PGNS():
         
         games_pddf = pd.DataFrame.from_dict(dict, orient='index')
         self.pddf_size = round((games_pddf.memory_usage(deep=True).sum() / (1024 ** 2)),2)
-        logging.info(f"pddf size: {self.pddf_size} MB")
+        logging.info(f"Dataframe size: {self.pddf_size} MB")
         return games_pddf
     
     @measure_time
     def pddf_to_parquet(self,pddf,parquet_file_name):
-        parquet_file_name = f"{parquet_file_name}.parquet"
+        self.parquet_file_name = f"{full_path(parquet_file_name)}.parquet"
         # Ensure that the passed object is a pandas DataFrame
         if isinstance(pddf, pd.DataFrame):
             # Save the DataFrame as a .parquet file
             # TODO: don't write file if it already exists
-            if does_file_exist(parquet_file_name):
-                logging.info(f"parquet file already exists: {parquet_file_name}")
+            if does_file_exist(self.parquet_file_name):
+                logging.info(f"Parquet file already exists: {self.parquet_file_name}")
             else:
-                pddf.to_parquet(parquet_file_name)
-                logging.info(f"dataframe has been written to {parquet_file_name}")
+                pddf.to_parquet(self.parquet_file_name)
+                logging.info(f"Dataframe has been written to {self.parquet_file_name}")
         else:
-            raise Exception("The provided ")
+            raise Exception(f"The provided pddf was not a dataframe: {type(pddf)}")
 
         self.parquet_size = round((os.path.getsize(parquet_file_name) / (1024 ** 2)),2)
 
-        logging.info(f".parquet size: {self.parquet_size} MB")
+        logging.info(f"Parquet file size: {self.parquet_size} MB")
         return self
