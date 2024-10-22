@@ -147,11 +147,11 @@ class PGNS():
         self.parquet_file_name = f"{full_path(parquet_file_name)}.parquet"
         # Ensure that the passed object is a pandas DataFrame
         if isinstance(pddf, pd.DataFrame):
-            # Save the DataFrame as a .parquet file
-            # TODO: don't write file if it already exists
+            
             if does_file_exist(self.parquet_file_name):
                 logging.info(f"Parquet file already exists: {self.parquet_file_name}")
             else:
+                # Save the DataFrame as a .parquet file
                 pddf.to_parquet(self.parquet_file_name)
                 logging.info(f"Dataframe has been written to {self.parquet_file_name}")
         else:

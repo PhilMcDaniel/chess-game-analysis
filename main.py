@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.NOTSET)
 #logging.disable()
 
 
-#file_name = sup.full_path('sample.pgn')
+
 pgn_url = 'https://database.lichess.org/standard/lichess_db_standard_rated_2013-01.pgn.zst'
 
 @sup.measure_time
@@ -20,7 +20,7 @@ def main():
     
     # download file
     dd = down_decomp.DownloadDecompressFile()
-    # TODO: dynamically name the file when downloading
+    
     downloaded_file = dd.download_file(url=pgn_url)
     # decompress file
     decompressed_file_name = dd.decompress_zst(input_filename=dd.downloaded_filename)
