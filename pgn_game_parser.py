@@ -208,3 +208,17 @@ class PGNS():
 
         logging.info(f"Parquet file size: {self.parquet_size} MB")
         return self
+    
+    @measure_time
+    def get_longest_game(self,pddf):
+        # Find the row with the maximum 'game_length'
+        longest_game_row = pddf.loc[pddf['game_length'].idxmax()]
+        
+        # Extract the game_id from the index and the game_length
+        game_id = longest_game_row.name  # Index as game_id
+        length = int(longest_game_row['game_length'])
+        
+        result = (length, game_id)
+        logging.info(f"The longest game was {length} moves: {game_id}")
+        
+        return result

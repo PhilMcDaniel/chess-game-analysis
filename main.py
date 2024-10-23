@@ -34,9 +34,13 @@ def main():
     file.pddf_to_parquet(games_pddf,decompressed_file_name)
     
     #TODO upload to cloud
+    
+    # find the longest game
+    file.get_longest_game(games_pddf)
+    
 
     #print single row for debugging
-    print(games['https://lichess.org/szom2tog'])
+    #print(games['https://lichess.org/szom2tog'])
 
 if __name__ == "__main__":
     main()
