@@ -15,6 +15,48 @@ class PGNS():
     Class to represent the PGN file of chess games
     """
 
+    
+    def count_chess_moves(self,game_string):
+        """
+        Calculate the number of moves in a chess game from standard algebraic notation,
+        handling annotations and variations.
+        
+        Args:
+            game_string (str): The chess game in standard algebraic notation
+            
+        Returns:
+            int: The number of moves played
+        """
+        # Remove evaluations in curly braces
+        while '{' in game_string and '}' in game_string:
+            start = game_string.find('{')
+            end = game_string.find('}') + 1
+            game_string = game_string[:start] + game_string[end:]
+        
+        # Split into tokens
+        tokens = game_string.split()
+        
+        # Remove the game result if present
+        if tokens[-1] in ["1-0", "0-1", "1/2-1/2", "*"]:
+            tokens = tokens[:-1]
+        
+        # Get the last move number
+        for token in reversed(tokens):
+            # Handle both "5." and "5..." format
+            if token.endswith('.'):
+                try:
+                    return int(token[:-1])
+                except ValueError:
+                    continue
+            elif "..." in token:
+                try:
+                    return int(token.split('.')[0])
+                except (ValueError, IndexError):
+                    continue
+        
+        return 0
+
+
     @measure_time
     def parse_pgn_to_dict(self,file_name):
         '''    
@@ -87,6 +129,10 @@ class PGNS():
                 if (line[:12] == '[Termination'):
                     game_termination = line[14:-2]
 
+                #game moves
+                if (line[:2] == '1.'):
+                    game_length = self.count_chess_moves(game_string = line)
+
                 #null handling for missing source data
                     try: white_game_elo
                     except NameError: white_game_elo = '0'
@@ -107,6 +153,7 @@ class PGNS():
                                     ,'game_opening':game_opening
                                     ,'game_time_control':game_time_control
                                     ,'game_termination':game_termination
+                                    ,'game_length':game_length
                                     ,'source_file':os.path.basename(file_name)
                                     }
                 if line[:7] == '[Result':
