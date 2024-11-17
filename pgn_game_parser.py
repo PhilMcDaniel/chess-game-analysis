@@ -2,6 +2,7 @@ import pandas as pd
 import logging
 import sys
 import os
+import json
 
 from support import measure_time, does_file_exist,full_path
 
@@ -222,3 +223,13 @@ class PGNS():
         logging.info(f"The longest game was {length} moves: {game_id}")
         
         return result
+    
+    @measure_time
+    def intermediate_metrics(self,pddf,target_file_name):
+        target_file_name = full_path(target_file_name)
+        data={"test":"testval"}
+        # Write JSON data to a file
+        with open(target_file_name, "w") as json_file:
+            json.dump(data, json_file, indent=4)
+
+        logging.info(f"Data written to {target_file_name}")

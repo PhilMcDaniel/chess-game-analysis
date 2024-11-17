@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 
 
+
 import pgn_game_parser as pgn
 import split_file as split
 import support as sup
@@ -38,7 +39,7 @@ def main():
     # find the longest game
     file.get_longest_game(games_pddf)
     
-
+    file.intermediate_metrics(pddf=games_pddf,target_file_name='intermediate_metrics.json')
     #print single row for debugging
     #print(games['https://lichess.org/szom2tog'])
 
