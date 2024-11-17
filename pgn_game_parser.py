@@ -127,7 +127,12 @@ class PGNS():
                     parent_opening = game_opening.split(":")[0]     
                 #parse game_time_control
                 if (line[:12] == '[TimeControl'):
-                    game_time_control = line[14:-2] 
+                    game_time_control = line[14:-2]
+                    base_time_control = game_time_control.split("+")[0]
+                    if len(game_time_control.split("+"))>1:
+                        increment_time_control = game_time_control.split("+")[1]
+                    else:
+                        increment_time_control = None
                 #parse game_termination
                 if (line[:12] == '[Termination'):
                     game_termination = line[14:-2]
@@ -156,6 +161,8 @@ class PGNS():
                                     ,'game_opening':game_opening
                                     ,'parent_opening':parent_opening
                                     ,'game_time_control':game_time_control
+                                    ,'game_base_time_control':base_time_control
+                                    ,'game_increment':increment_time_control
                                     ,'game_termination':game_termination
                                     ,'game_length':game_length
                                     ,'source_file':os.path.basename(file_name)
