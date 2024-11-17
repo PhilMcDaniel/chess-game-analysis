@@ -122,7 +122,9 @@ class PGNS():
                     black_game_elo = line[18:-2]
                 #parse game_opening
                 if (line[:8] == '[Opening'):
-                    game_opening = line[10:-2]        
+                    game_opening = line[10:-2]   
+                    #parent opening
+                    parent_opening = game_opening.split(":")[0]     
                 #parse game_time_control
                 if (line[:12] == '[TimeControl'):
                     game_time_control = line[14:-2] 
@@ -152,6 +154,7 @@ class PGNS():
                                     ,'white_game_elo':white_game_elo
                                     ,'black_game_elo':black_game_elo
                                     ,'game_opening':game_opening
+                                    ,'parent_opening':parent_opening
                                     ,'game_time_control':game_time_control
                                     ,'game_termination':game_termination
                                     ,'game_length':game_length
