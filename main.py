@@ -28,20 +28,20 @@ def main():
 
     file = pgn.PGNS()
     # parse .pgn to dict of games
-    games = file.parse_pgn_to_dict(decompressed_file_name)
+    games = file.parse_pgn_to_dict(decompressed_file_name,chunk_size=10000)
     # turn dict of games into pddf
     games_pddf = file.dict_to_pddf(games)
     # write pddf to .parquet
-    file.pddf_to_parquet(games_pddf,decompressed_file_name)
+    #file.pddf_to_parquet(games_pddf,decompressed_file_name)
     
     #TODO upload to cloud
     
     # find the longest game
-    file.get_longest_game(games_pddf)
+    #file.get_longest_game(games_pddf)
     
-    file.intermediate_metrics(pddf=games_pddf,target_file_name='intermediate_metrics.json')
+    #file.intermediate_metrics(pddf=games_pddf,target_file_name='intermediate_metrics.json')
     #print single row for debugging
     #print(games['https://lichess.org/szom2tog'])
-
+    #print(games)
 if __name__ == "__main__":
     main()

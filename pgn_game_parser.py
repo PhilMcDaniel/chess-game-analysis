@@ -59,10 +59,11 @@ class PGNS():
 
 
     @measure_time
-    def parse_pgn_to_dict(self,file_name):
+    def parse_pgn_to_dict(self,file_name,chunk_size=100000):
         '''    
         Parameters:
             file_name - The file name of the pgn
+            chunk_size - The number of games to process in a single batchs
         Returns:
             data - dict: Dictionary of games from the pgn file
         Sets:
@@ -74,6 +75,7 @@ class PGNS():
         
         line_num = 0
         results = 0
+        total_games = 0
         data = {}
         with open(file_name,'r') as file:
             for line in file:
@@ -171,16 +173,28 @@ class PGNS():
                     results+=1
                 else:
                     continue
+
+                if len(data)>=chunk_size:
+                    #process mini-batch
+                    
+                    #reset data dictionary
+                    logging.info(f"batch of {len(data)} games parsed")
+                    total_games+=len(data)
+                    data.clear()
             
+            # process final mini-batch
+            if data:
+                #process mini-batch
+                total_games+=len(data)
+                logging.info(f"last batch of {len(data)} games parsed")
+                
             self.lines = line_num
             self.games = len(data)
-            self.dict_size = round(sys.getsizeof(data)/ (1024 ** 2),1)
-
+            self.total_games = total_games
 
         logging.info(f"{self.lines} rows have been parsed")
-        logging.info(f"{self.games} games have been parsed")
+        logging.info(f"{self.total_games} games have been parsed")
         logging.info(f"{results} results have been parsed")
-        logging.info(f"data dictionary size: {self.dict_size} MB")
 
         return data
     
